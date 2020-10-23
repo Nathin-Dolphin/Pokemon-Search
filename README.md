@@ -16,39 +16,39 @@ At the specified locations in the terminal, enter these commands in order,
 ## Execute Program
 
 	...\Pokemon-Search\class> java PokemonSearch
-  ...\Pokemon-Search\class> java PokedexWriter
+  	...\Pokemon-Search\class> java PokedexWriter
 
 
 ## PokemonSearch
   ## Version 1.0 Features:
-		(Implemented) - Search Pokemon by name
-		(Implemented) - Search Pokemon by number
-		(Implemented) - Search Pokemon by type
-		(Implemented) - Search Pokemon by region
-		(Implemented) - Implement a list for type
-		(Implemented) - Implement a list for region
-		(Implemented) - (Temporary) Print the results to the terminal
+	(Implemented) - Search Pokemon by name
+	(Implemented) - Search Pokemon by number
+	(Implemented) - Search Pokemon by type
+	(Implemented) - Search Pokemon by region
+	(Implemented) - Implement a list for type
+	(Implemented) - Implement a list for region
+	(Implemented) - (Temporary) Print the results to the terminal
 
   ## Version 2.0 Features:
-    (Implemented) - Print the output to the frame instead of the terminal
-		(Implemented) - Implement method to automatically find and download the needed json files via URLs
-		(Implemented) - Print more information about each pokemon
-		(Implemented) - Implement option to search by evolution
-    (In Progress) - Add pop-up informational box before starting program
+	(Implemented) - Print the output to the frame instead of the terminal
+	(Implemented) - Implement method to automatically find and download the needed json files via URLs
+	(Implemented) - Print more information about each pokemon
+	(Implemented) - Implement option to search by evolution
+	(In Progress) - Add pop-up informational box before starting program
 
   ## Version 3.0 Features:
-		() - Put PokemonSearch and PokedexWriter into its own repository
-		() - Implement option to search by weaknessess
-		() - Implement option to search by weight
-		() - Implement option to search by size
+	() - Put PokemonSearch and PokedexWriter into its own repository
+	() - Implement option to search by weaknessess
+	() - Implement option to search by weight
+	() - Implement option to search by size
     
     
 # PokedexWriter
   ## Version 1.0 Features:
-		(Implemented) - Add every pokemon to the json files
-		(In Progress) - Be able to easily modify already existing files
-    () - Add pokemon size
-    () - Add pokemon weight
-    () - Add pokemon weakness
+	(Implemented) - Add every pokemon to the json files
+	(In Progress) - Be able to easily modify already existing files
+	() - Add pokemon size
+	() - Add pokemon weight
+	() - Add pokemon weakness
   ## Version 2.0 Features:
-    TBD
+	TBD

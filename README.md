@@ -46,7 +46,7 @@ At the specified locations in the terminal, enter these commands in order,
 # PokedexWriter
   ## Version 1.0 Features:
 	(Implemented) - Add every pokemon to the json files
-	(In Progress) - Be able to easily modify already existing files
+	(Implemented) - Be able to easily modify already existing files
 	() - Add pokemon size
 	() - Add pokemon weight
 	() - Add pokemon weakness

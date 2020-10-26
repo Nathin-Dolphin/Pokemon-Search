@@ -34,10 +34,9 @@ At the specified locations in the terminal, enter these commands in order,
 	(Implemented) - Implement method to automatically find and download the needed json files via URLs
 	(Implemented) - Print more information about each pokemon
 	(Implemented) - Implement option to search by evolution
-	(In Progress) - Add pop-up informational box before starting program
+	(Implemented) - Add pop-up informational box before starting program
 
   ## Version 3.0 Features:
-	() - Put PokemonSearch and PokedexWriter into its own repository
 	() - Implement option to search by weaknessess
 	() - Implement option to search by weight
 	() - Implement option to search by size
@@ -47,8 +46,7 @@ At the specified locations in the terminal, enter these commands in order,
   ## Version 1.0 Features:
 	(Implemented) - Add every pokemon to the json files
 	(Implemented) - Be able to easily modify already existing files
+  ## Version 2.0 Features:
 	() - Add pokemon size
 	() - Add pokemon weight
 	() - Add pokemon weakness
-  ## Version 2.0 Features:
-	TBD

@@ -1,0 +1,25 @@
+{
+	"object1": "1",
+	"object2": 2,
+	"objectTypes": {
+		"type1": "4",
+		"type2": 5
+	},
+	"objectStuff": [{
+			"stuff1": "5",
+			"stuff2": "a1"
+		}],
+	"objectArrays": [{
+			"array1": [
+				{
+					"a1": 6}
+			],
+			"array2": [
+					{"a1": 3
+				},
+				{
+					"a2": "a8"
+				}]
+		}
+	]
+}

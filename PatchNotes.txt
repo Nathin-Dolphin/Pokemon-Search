@@ -1,0 +1,13 @@
+Pokemon Search v2.0.1
+ - Added message to pop-up box
+
+Pokemon Search v2.0
+ - Search for Pokémon by name, number, type, and evolution
+
+
+
+PokedexWriter v2.0
+ - Creat JSONs that conatin info about Pokémon for Pokemon Search to use
+ - '-WriteNewPokedex' - Create a new JSON and manually input each Pokémon
+ - '-WriteNewPokedexAssisted' - Create a new JSON and input each Pokémon with assistance
+ - '-ModifyPokedex' - Modify the Pokémon in a JSON

@@ -7,7 +7,7 @@
 
 /**
  * @author Nathin Wascher
- * @version PokemonSearch v1.5.1
+ * @version PokemonSearch v2.0.1
  * @since October 27, 2020
  */
 

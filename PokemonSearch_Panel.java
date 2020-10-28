@@ -80,10 +80,12 @@ public class PokemonSearch_Panel extends JPanel implements ActionListener {
     }
 
     private void showInfoBox() {
-        String message = "PokemonSearch and PokedexWriter in the OOP-Repository will no longer be updated.";
-        message = message + "\nTo access the up-to-date version, download the Pokemon-Search Repository from";
-        message = message + "\n\'https://github.com/Nathin-Dolphin/Pokemon-Search.git\''";
-        JOptionPane.showMessageDialog(this, message, "Pokemon Search v1.4.3", JOptionPane.INFORMATION_MESSAGE);
+        // TODO: Add icon
+        String message = "Copyright (c) 2020 Nathin-Dolphin";
+        message = message + "\nThis file is under the MIT License";
+        message = message + "\n\nPokemon is a registered trademark of Nintendo";
+        message = message + "\n\nSearch for Pokemon by name, number, type, and evolution";
+        JOptionPane.showMessageDialog(this, message, "Pokemon Search v1.5.1", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Reads from the locally stored file 'pokeInfo'

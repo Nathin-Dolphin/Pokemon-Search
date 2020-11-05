@@ -9,8 +9,8 @@
 
 /**
  * @author Nathin Wascher
- * @version PokedexWriter v2.0
- * @since October 26, 2020
+ * @version PokedexWriter v2.0.1
+ * @since November 5, 2020
  */
 
 public class PokedexWriter {
@@ -38,7 +38,6 @@ public class PokedexWriter {
 
             } else if (args[0].equalsIgnoreCase("-ModifyPokedex")) {
                 System.out.println("Executing Command -ModifyPokedex...");
-                System.out.println("THIS FEATURE IS CURRENTLY A WORK IN PROGRESS");
                 System.out.println("\n...Terminating Program (PokedexWriter)");
                 new PokedexWriter_Panel(args[1]);
 
@@ -66,8 +65,8 @@ public class PokedexWriter {
         System.out.println("\njava PokedexWriter -WriteNewPokedexAssisted [region name]");
         System.out.println("    ex. java PokedexWriter -WriteNewPokedexAssisted galarian");
 
-        System.out.println("\njava PokedexWriter -AddToPokedex [region name]");
-        System.out.println("    ex. java PokedexWriter -AddToPokedex alolan");
+        System.out.println("\njava PokedexWriter -ModifyPokedex [region name]");
+        System.out.println("    ex. java PokedexWriter -ModifyPokedex alolan");
         System.out.println("\n...Terminating Program (PokedexWriter)");
     }
 }

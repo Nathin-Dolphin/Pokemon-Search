@@ -55,8 +55,8 @@ public class PokedexWriter_Panel extends PokedexWriter_Writer {
     public PokedexWriter_Panel(String regionName) {
         setUp(regionName);
 
-        // Temporarly initialize 'min' and 'max' to a value so the frame is created
-        // properly
+        // Temporarly initialize 'min' and 'max' to a
+        // value so the frame is created properly
         min = 0;
         max = 1;
 

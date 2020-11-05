@@ -38,8 +38,8 @@ public class PokedexWriter_Writer extends JPanel implements ActionListener {
     private final String pokedexSourceURL = "https://pokemondb.net/pokedex/national";
 
     // Have these get automatically updated by 'pokeInfo'
-    private final int NAME = 0, TYPE = 4, EVOLUTION = 6, OBJECT_LENGTH = 8;
-    // private final int NUMBER = 2;
+    private final int NAME = 0, TYPE = 4, OBJECT_LENGTH = 8;
+    // private final int NUMBER = 2, EVOLUTION = 6;
 
     private ArrayList<ArrayList<String>> pokedexEntries;
     private ArrayList<String> tempPokedexEntry, urlContents, urlRegionList, jsonContents;
@@ -316,11 +316,11 @@ public class PokedexWriter_Writer extends JPanel implements ActionListener {
         if (modifyPokedex & (jsonIndex * OBJECT_LENGTH + 1) < jsonContents.size())
             modifyPokemonInfo();
 
-        // TODO: Make it more noticable that a file is created
         if (pokeNum == max + 1) {
-            // String tempString = "Create " + regionName + ".json File";
-            // outputList.add(tempString, outputList.getItemCount() - 1);
-            createFile();
+            tempString = "Create " + regionName + ".json File";
+            outputList.remove(outputList.getItemCount() - 1);
+            outputList.add(tempString, outputList.getItemCount());
+            outputList.select(outputList.getItemCount() - 1);
         }
     }
 
@@ -387,8 +387,6 @@ public class PokedexWriter_Writer extends JPanel implements ActionListener {
 
     // Create a JSON and write the contents of the pokedex array to it
     private void createFile() {
-        outputList.remove(outputList.getItemCount() - 1);
-
         // TODO: Have this do a pop-up box too
         System.out.println("Creating File: \"" + regionName + ".json\"");
 
@@ -439,35 +437,50 @@ public class PokedexWriter_Writer extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == enterJB || e.getSource() == nameJTF) {
-            if (pokeNum == max + 1) {
-                warning("MAX NUMBER REACHED");
+        String tempString;
 
-                // If the top line or no line is selected
-            } else if (outputList.getSelectedIndex() <= 0) {
-                outputList.select(outputList.getItemCount() - 1);
-                warning("MissingNo has Appeared!");
+        try {
+            outputList.getSelectedItem();
+            tempString = "Create " + regionName + ".json File";
 
-                // Is the name blank
-            } else if (nameJTF.getText().replaceAll(" ", "").equals("")) {
-                warning("MISSING NAME");
+            if (e.getSource() == enterJB || e.getSource() == nameJTF) {
+                if (outputList.getSelectedItem().equals(tempString)) {
+                    tempString = "Successfully created " + regionName + ".json";
+                    outputList.remove(outputList.getItemCount() - 1);
+                    outputList.add(tempString, outputList.getItemCount());
+                    outputList.select(outputList.getItemCount() - 1);
+                    createFile();
 
-                // Are both of the selected items in the type Lists the same
-            } else if (type1CL.getSelectedItem().equals(type2CL.getSelectedItem())) {
-                warning("TYPE 1 CAN NOT EQUAL TYPE 2");
+                } else if (pokeNum == max + 1) {
+                    warning("MAX NUMBER REACHED");
 
-                // Is user creating a new pokemon
-            } else if (outputList.getSelectedItem().equals("Add New Pokemon!")) {
-                addNewPokemon();
+                    // If the top line or no line is selected
+                } else if (outputList.getSelectedIndex() <= 0) {
+                    outputList.select(outputList.getItemCount() - 1);
+                    warning("MissingNo has Appeared!");
 
-                // If an already existing pokemon is selected, then modify
-                // the pokemon on the screen and in the pokedex array
-            } else {
-                changePokemon();
+                    // Is the name blank
+                } else if (nameJTF.getText().replaceAll(" ", "").equals("")) {
+                    warning("MISSING NAME");
+
+                    // Are both of the selected items in the type Lists the same
+                } else if (type1CL.getSelectedItem().equals(type2CL.getSelectedItem())) {
+                    warning("TYPE 1 CAN NOT EQUAL TYPE 2");
+
+                    // Is user creating a new pokemon
+                } else if (outputList.getSelectedItem().equals("Add New Pokemon!")) {
+                    addNewPokemon();
+
+                    // If an already existing pokemon is selected, then modify
+                    // the pokemon on the screen and in the pokedex array
+                } else {
+                    changePokemon();
+                }
+                // When user presses nextEvoNum Button
+            } else if (e.getSource() == nextEvoNumJB) {
+                evoNumJTF.setText(addZeros(++currentEvoNum));
             }
-            // When user presses nextEvoNum Button
-        } else if (e.getSource() == nextEvoNumJB) {
-            evoNumJTF.setText(addZeros(++currentEvoNum));
+        } catch (NullPointerException n) {
         }
     }
 }

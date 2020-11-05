@@ -8,8 +8,9 @@
 import utility.json.JSONReader;
 
 // import javax.swing.JOptionPane;
-
-import java.awt.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
 
 import java.io.FileNotFoundException;
 
@@ -24,7 +25,10 @@ public class PokemonSearch_Searcher {
     private JSONReader pssJsonReader;
     private ArrayList<String> pokedex, tempPokedex;
 
-    public List outputList;
+    private DefaultListModel stringList;
+    private JList outputList;
+
+    public JScrollPane outputListPane;
 
     /**
      * 
@@ -32,7 +36,10 @@ public class PokemonSearch_Searcher {
      */
     public PokemonSearch_Searcher(JSONReader jsonReader) {
         this.pssJsonReader = jsonReader;
-        outputList = new List(40);
+        stringList = new DefaultListModel();
+        outputList = new JList();
+        outputList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        outputListPane = new JScrollPane(outputList);
     }
 
     /**
@@ -269,9 +276,10 @@ public class PokemonSearch_Searcher {
     }
 
     private void printToScreen(ArrayList<String> pokemonList) {
-        for (String s : pokemonList) {
-            outputList.add(s);
-        }
+        stringList.removeAllElements();
+        for (String s : pokemonList)
+            stringList.addElement(s);
+        outputList.setModel(stringList);
     }
 
     /**
@@ -294,7 +302,7 @@ public class PokemonSearch_Searcher {
         else if (pokeNum <= 649)
             return "Unova ";
         else if (pokeNum <= 721)
-            return "Kalos  ";
+            return "Kalos   ";
         else if (pokeNum <= 809)
             return "Alola    ";
         else if (pokeNum <= 890)

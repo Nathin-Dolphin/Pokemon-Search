@@ -74,7 +74,7 @@ public class PokemonSearch_Panel extends JPanel implements ActionListener {
         setUpPanels();
         showInfoBox();
 
-        frame.add(pokeSearch.outputList);
+        frame.add(pokeSearch.outputListPane);
         frame.add(this);
         frame.setVisible(true);
     }

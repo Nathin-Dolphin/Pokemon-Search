@@ -1,3 +1,6 @@
+Pokemon Search v2.0.2
+ - The screen shows the pokemon much faster
+
 Pokemon Search v2.0.1
  - Added message to pop-up box
 
@@ -5,8 +8,11 @@ Pokemon Search v2.0
  - Search for Pokémon by name, number, type, and evolution
 
 
+Pokedex Writer v2.0.1
+ - The user also must push 'add pokemon' while the 'create json' is selected to create the file
+ - The screen shows when the user can create the file
 
-PokedexWriter v2.0
+Pokedex Writer v2.0
  - Creat JSONs that conatin info about Pokémon for Pokemon Search to use
  - '-WriteNewPokedex' - Create a new JSON and manually input each Pokémon
  - '-WriteNewPokedexAssisted' - Create a new JSON and input each Pokémon with assistance

@@ -11,6 +11,10 @@ Pokemon Search v2.0
  - Search for Pokémon by name, number, type, and evolution
 
 
+Pokedex Writer v2.1
+ - Created a screen that allows the user to input the necessary arguments instead of through the terminal
+ - A pop up box appears with info about the program on program execution
+
 Pokedex Writer v2.0.1
  - The user also must push 'add pokemon' while the 'create json' is selected to create the file
  - The screen shows when the user can create the file

@@ -5,68 +5,125 @@
  * This file is under the MIT License.
  */
 
+import utility.SimpleFrame;
+
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 // TODO: Add continue option after saving and exiting
 
 /**
  * @author Nathin Wascher
- * @version PokedexWriter v2.0.1
- * @since November 5, 2020
+ * @version PokedexWriter v2.1
+ * @since November 6, 2020
  */
+@SuppressWarnings("serial")
+public class PokedexWriter extends JPanel implements ActionListener {
+    private SimpleFrame frame;
+    private GridBagConstraints gbc;
 
-public class PokedexWriter {
-
-    public PokedexWriter(String[] args) {
-        main(args);
-    }
+    private JButton[] buttonList;
+    private JLabel[] labelList;
+    private JTextField paramTextField;
 
     public static void main(String[] args) {
         System.out.println("Excecuting Program (PokedexWriter)...");
-        System.out.println("\n!!!WARNING: THIS PROGRAM CAN AND WILL OVERWRITE FILES!!!");
+        new PokedexWriter();
+    }
 
-        if (args.length == 0) {
-            System.out.println("\nERROR: NO ARGUMENT FOUND. USE \"-Help\"");
-            help();
+    private PokedexWriter() {
+        frame = new SimpleFrame("PokedexWriter", "What pokedex are you writing today?", 500, 400, true);
+        gbc = new GridBagConstraints();
 
-        } else if (args.length >= 2) {
-            if (args[0].equalsIgnoreCase("-WriteNewPokedex")) {
-                System.out.println("Executing Command -WriteNewPokedex...");
-                new PokedexWriter_Panel(args[1], false);
+        setLayout(new GridBagLayout());
+        setBackground(new Color(0, 150, 0));
 
-            } else if (args[0].equalsIgnoreCase("-WriteNewPokedexAssisted")) {
-                System.out.println("Executing Command -WriteNewPokedexAssisted...");
-                new PokedexWriter_Panel(args[1], true);
+        setUp();
+        showInfoBox();
 
-            } else if (args[0].equalsIgnoreCase("-ModifyPokedex")) {
-                System.out.println("Executing Command -ModifyPokedex...");
-                System.out.println("\n...Terminating Program (PokedexWriter)");
-                new PokedexWriter_Panel(args[1]);
+        frame.add(this);
+        frame.setVisible(true);
+    }
 
-            } else {
-                System.out.println("\nERROR: INVALID COMMAND. USE \"-Help\"");
-                System.out.println("\n...Terminating Program (PokedexWriter)");
-            }
-        } else if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("-Help")) {
-                System.out.println("Executing Command -Help...");
-                help();
+    private void showInfoBox() {
+        // TODO: Add icon
+        String message = "Copyright (c) 2020 Nathin-Dolphin";
+        message = message + "\nThis file is under the MIT License";
+        message = message + "\n\nPokemon is a registered trademark of Nintendo";
+        message = message + "\n\nWrite or modify pokedexes for Pokemon Search to use";
+        JOptionPane.showMessageDialog(this, message, "Pokedex Writer v2.1", JOptionPane.INFORMATION_MESSAGE);
+    }
 
-            } else {
-                System.out.println("\nERROR: INVALID COMMAND. USE \"-Help\"");
-                System.out.println("\n...Terminating Program (PokedexWriter)");
-            }
+    private void setUp() {
+        paramTextField = new JTextField(12);
+
+        labelList = new JLabel[5];
+        labelList[0] = new JLabel("Write region name here:");
+        labelList[1] = new JLabel("Write a new pokedex.");
+        labelList[2] = new JLabel("Write a new pokedex with assistance.");
+        labelList[3] = new JLabel("Modify an already existing pokedex.");
+        labelList[4] = new JLabel("Not Yet Implemented.");
+
+        buttonList = new JButton[4];
+        buttonList[0] = new JButton("Write New Pokedex");
+        buttonList[1] = new JButton("Write New Pokedex (Assisted)");
+        buttonList[2] = new JButton("Modify Pokedex");
+        buttonList[3] = new JButton("Not Yet Implemented");
+
+        for (JButton b : buttonList)
+            b.addActionListener(this);
+
+        setGBC(0, 0);
+        add(labelList[0], gbc);
+        setGBC(0, 1);
+        add(paramTextField, gbc);
+        for (int i = 0; i < buttonList.length; i++) {
+            setGBC(0, (i * 2) + 2);
+            add(labelList[i + 1], gbc);
+            setGBC(0, (i * 2) + 3);
+            add(buttonList[i], gbc);
         }
     }
 
-    public static void help() {
-        System.out.println("DO NOT USE THESE EXAMPLES!");
-        System.out.println("\njava PokedexWriter -WriteNewPokedex [region name]");
-        System.out.println("    ex. java PokedexWriter -WriteNewPokedex galarian");
+    private void setGBC(int gridX, int gridY) {
+        gbc.gridx = gridX;
+        gbc.gridy = gridY;
+    }
 
-        System.out.println("\njava PokedexWriter -WriteNewPokedexAssisted [region name]");
-        System.out.println("    ex. java PokedexWriter -WriteNewPokedexAssisted galarian");
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String regionName = paramTextField.getText();
+        String[] tempArray = { " ", "\t", "\n" };
 
-        System.out.println("\njava PokedexWriter -ModifyPokedex [region name]");
-        System.out.println("    ex. java PokedexWriter -ModifyPokedex alolan");
-        System.out.println("\n...Terminating Program (PokedexWriter)");
+        for (int j = 0; j < tempArray.length; j++)
+            regionName = regionName.replace(tempArray[j], "");
+
+        if (!regionName.equals(""))
+            if (e.getSource() == buttonList[0]) { // 'Write New Pokedex' Button
+                new PokedexWriter_Panel(regionName, false);
+
+            } else if (e.getSource() == buttonList[1]) { // 'Write New Pokedex (Assisted)' Button
+                new PokedexWriter_Panel(regionName, true);
+
+            } else if (e.getSource() == buttonList[2]) { // 'Modify Pokedex' Button
+                new PokedexWriter_Panel(regionName);
+
+            } else { // 'Not Yet Implemented' Button
+                JOptionPane.showMessageDialog(this, "ERROR: NOT YET IMPLEMENTED", "ERROR: NOT YET IMPLEMENTED",
+                        JOptionPane.WARNING_MESSAGE);
+
+            }
+        else
+            JOptionPane.showMessageDialog(this, "ERROR: NO REGION NAME INPUTTED", "ERROR", JOptionPane.WARNING_MESSAGE);
     }
 }

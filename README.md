@@ -37,9 +37,9 @@ At the specified locations in the terminal, enter these commands in order,
 	(Implemented) - Add pop-up informational box before starting program
 
   ## Version 3.0 Features:
-	() - Implement option to search by weaknessess
-	() - Implement option to search by weight
 	() - Implement option to search by size
+	() - Implement option to search by weight
+	() - Implement option to search by weaknessess
     
     
 # PokedexWriter

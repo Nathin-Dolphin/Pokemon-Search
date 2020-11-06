@@ -25,8 +25,8 @@ public class PokemonSearch_Searcher {
     private JSONReader pssJsonReader;
     private ArrayList<String> pokedex, tempPokedex;
 
-    private DefaultListModel stringList;
-    private JList outputList;
+    private DefaultListModel<PokemonSearch_Pokemon> listModel;
+    private JList<PokemonSearch_Pokemon> outputJList;
 
     public JScrollPane outputListPane;
 
@@ -36,10 +36,9 @@ public class PokemonSearch_Searcher {
      */
     public PokemonSearch_Searcher(JSONReader jsonReader) {
         this.pssJsonReader = jsonReader;
-        stringList = new DefaultListModel();
-        outputList = new JList();
-        outputList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        outputListPane = new JScrollPane(outputList);
+        listModel = new DefaultListModel<>();
+        outputJList = new JList<>(listModel);
+        outputListPane = new JScrollPane(outputJList);
     }
 
     /**
@@ -58,13 +57,14 @@ public class PokemonSearch_Searcher {
      * @param findEvolutionSetNum
      */
     private void searchByNumber(int input, ArrayList<String> regionList, boolean findEvolutionSetNum) {
+        PokemonSearch_Pokemon tempPSP;
         String[] tempArray;
         String tempString;
         int tempInt, arrayPos = 1;
         pokedex = new ArrayList<String>();
 
         if (!findEvolutionSetNum) {
-            outputList.removeAll();
+            outputJList.removeAll();
             arrayPos = 0;
         }
 
@@ -89,28 +89,33 @@ public class PokemonSearch_Searcher {
         // TODO: Implement binary sorting
         tempPokedex = new ArrayList<String>();
         if (!findEvolutionSetNum) {
+            listModel.removeAllElements();
+
+            // Add pokemon by number to the model list
             for (int g = NUMBER; g < pokedex.size(); g = g + OBJECT_LENGTH) {
                 tempInt = Integer.parseInt(pokedex.get(g + 1));
 
                 if (input == tempInt) {
-                    tempString = processInfo(g - NUMBER);
-                    tempPokedex.add(tempString);
+                    tempPSP = new PokemonSearch_Pokemon();
+                    tempPSP.processInfo(pokedex, g - NUMBER);
+                    listModel.addElement(tempPSP);
                     g = pokedex.size();
                 }
             }
-            printToScreen(tempPokedex);
             searchByNumber(input, regionList, true);
+            outputJList.setModel(listModel);
 
         } else {
+            // Add pokemon by evolution to the model list
             for (int g = EVOLUTION; g < pokedex.size(); g = g + OBJECT_LENGTH) {
                 tempInt = Integer.parseInt(pokedex.get(g + 1).split("-")[0]);
 
                 if (input == tempInt) {
-                    tempString = processInfo(g - EVOLUTION);
-                    tempPokedex.add(tempString);
+                    tempPSP = new PokemonSearch_Pokemon();
+                    tempPSP.processInfo(pokedex, g - EVOLUTION);
+                    listModel.addElement(tempPSP);
                 }
             }
-            printToScreen(tempPokedex);
         }
     }
 
@@ -123,8 +128,10 @@ public class PokemonSearch_Searcher {
      */
     public void findPokemon(ArrayList<String> regionInput, ArrayList<String> typeInput,
             ArrayList<String> evolutionInput, String input) {
+        PokemonSearch_Pokemon tempPSP;
         String tempString;
-        outputList.removeAll();
+        outputJList.removeAll();
+        listModel.removeAllElements();
 
         long startTime = System.nanoTime();
 
@@ -139,17 +146,17 @@ public class PokemonSearch_Searcher {
         if (!input.equals(""))
             searchByName(input);
 
-        // Prints the pokemon to the screen
-        tempPokedex = new ArrayList<String>();
+        // Add pokemon by name to the model list
         for (int f = NAME; f < pokedex.size(); f = f + OBJECT_LENGTH) {
             tempString = pokedex.get(f);
 
             if (tempString.equals("name")) {
-                tempString = processInfo(f + NAME);
-                tempPokedex.add(tempString);
+                tempPSP = new PokemonSearch_Pokemon();
+                tempPSP.processInfo(pokedex, f + NAME);
+                listModel.addElement(tempPSP);
             }
         }
-        printToScreen(tempPokedex);
+        outputJList.setModel(listModel);
         System.out
                 .println("\nElapsed Time: " + (double) ((System.nanoTime() - startTime) / 1000000) / 1000 + " Seconds");
     }
@@ -232,83 +239,6 @@ public class PokemonSearch_Searcher {
                         pokedex.add(tempPokedex.get(g + h - NAME));
                 }
         }
-    }
-
-    /**
-     * Prints a pokemon's information.
-     * 
-     * @param pokedexPos The position of the {@code JSON} name "<i>name</i>" in the
-     *                   {@code pokedex ArrayList}.
-     */
-    private String processInfo(int pokedexPos) {
-        pokedexPos++;
-        String[] tempArray;
-        String region = foundInRegion(pokedex.get(pokedexPos + NUMBER));
-        String tempString = "";
-        int pokeNum;
-
-        // Adds the region and pokemon evolution
-        tempString = region + "   Evo:" + pokedex.get(pokedexPos + EVOLUTION) + "   ";
-
-        // Adds the pokemon number
-        pokeNum = Integer.parseInt(pokedex.get(pokedexPos + NUMBER));
-        if (pokeNum > 999)
-            tempString = tempString + "#" + pokeNum;
-        else if (pokeNum > 99)
-            tempString = tempString + "#0" + pokeNum;
-        else if (pokeNum > 9)
-            tempString = tempString + "#00" + pokeNum;
-        else
-            tempString = tempString + "#000" + pokeNum;
-
-        // Adds the pokemon's name
-        tempString = tempString + "   " + pokedex.get(pokedexPos + NAME) + "  ";
-        for (int i = pokedex.get(pokedexPos + NAME).length(); i < 16; i++)
-            tempString = tempString + " ";
-
-        // Adds the types
-        tempArray = pokedex.get(pokedexPos + TYPE).split("-");
-        tempString = tempString + tempArray[0];
-        if (tempArray.length == 2)
-            tempString = tempString + ", " + tempArray[1];
-
-        return tempString;
-    }
-
-    private void printToScreen(ArrayList<String> pokemonList) {
-        stringList.removeAllElements();
-        for (String s : pokemonList)
-            stringList.addElement(s);
-        outputList.setModel(stringList);
-    }
-
-    /**
-     * 
-     * @param pokeNumString
-     * @return A {@code String} of the region with the appropriate spaces to keep
-     *         spacing in {@code outputList} consistent
-     */
-    private String foundInRegion(String pokeNumString) {
-        int pokeNum = Integer.parseInt(pokeNumString);
-
-        if (pokeNum <= 151)
-            return "Kanto  ";
-        else if (pokeNum <= 251)
-            return "Johto   ";
-        else if (pokeNum <= 386)
-            return "Hoenn ";
-        else if (pokeNum <= 493)
-            return "Sinnoh";
-        else if (pokeNum <= 649)
-            return "Unova ";
-        else if (pokeNum <= 721)
-            return "Kalos   ";
-        else if (pokeNum <= 809)
-            return "Alola    ";
-        else if (pokeNum <= 890)
-            return "Galar   ";
-        else
-            return "NONE???";
     }
 
     // private void pokemonInformationPane() {}

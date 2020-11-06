@@ -85,7 +85,7 @@ public class PokemonSearch_Panel extends JPanel implements ActionListener {
         message = message + "\nThis file is under the MIT License";
         message = message + "\n\nPokemon is a registered trademark of Nintendo";
         message = message + "\n\nSearch for Pokemon by name, number, type, and evolution";
-        JOptionPane.showMessageDialog(this, message, "Pokemon Search v2.0.2", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, "Pokemon Search v2.0.3", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Reads from the locally stored file 'pokeInfo'

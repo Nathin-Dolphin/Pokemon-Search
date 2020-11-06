@@ -1,3 +1,6 @@
+Pokemon Search v2.0.3
+ - JList and DefaultListModel now use 'pokemon' objects to print to the screen
+
 Pokemon Search v2.0.2
  - The screen shows the pokemon much faster
 

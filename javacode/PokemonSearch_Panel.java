@@ -5,39 +5,46 @@
  * This file is under the MIT License.
  */
 
-import utility.json.URLReader;
-import utility.json.JSONReader;
-
 import utility.SimpleFrame;
+import utility.json.JSONReader;
+import utility.json.URLReader;
+import utility.ListModelObject;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Color;
-import java.awt.List;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import java.io.BufferedWriter;
-import java.io.PrintWriter;
-import java.io.FileWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+
 /**
  * @author Nathin Wascher
  */
+@SuppressWarnings("serial")
 public class PokemonSearch_Panel extends JPanel implements ActionListener {
-    private static final long serialVersionUID = 6168657140878114472L;
     private final String pokeInfoURL = "https://jsontextfiles.azurewebsites.net/pokeInfo.json";
 
     private SimpleFrame frame;
@@ -46,11 +53,10 @@ public class PokemonSearch_Panel extends JPanel implements ActionListener {
     private JSONReader pspJsonReader;
     private GridBagConstraints gbc;
 
-    private JPanel searchBarPanel;
-    private List typeCL, regionCL, evolutionCL; // CL = Check List
+    private DefaultListModel<ListModelObject> tempDLM;
+    private JList<ListModelObject> typeJL, regionJL, evolutionJL;
     private JTextField searchTF;
-    private JLabel searchBarLabel, regionLabel, typeLabel;
-    private JButton enterB;
+    private ImageIcon image;
 
     private ArrayList<String> typeInput, regionInput, evolutionInput, typeList, regionList;
     private String pokeInfoJSONVersion = null, pokeInfoURLVersion = null;
@@ -59,7 +65,8 @@ public class PokemonSearch_Panel extends JPanel implements ActionListener {
 
     // Initializes the frame and some other classes
     public PokemonSearch_Panel() {
-        frame = new SimpleFrame("PokemonSearch", "Guess That Pokemon!", 800, 600, false);
+        findImageIcon();
+        frame = new SimpleFrame("PokemonSearch", "Guess That Pokemon!", 800, 600, false, image);
         frame.setLayout(new GridLayout(1, 2));
 
         gbc = new GridBagConstraints();
@@ -80,7 +87,6 @@ public class PokemonSearch_Panel extends JPanel implements ActionListener {
     }
 
     private void showInfoBox() {
-        // TODO: Add icon
         String message = "Copyright (c) 2020 Nathin-Dolphin";
         message = message + "\nThis file is under the MIT License";
         message = message + "\n\nPokemon is a registered trademark of Nintendo";
@@ -88,8 +94,18 @@ public class PokemonSearch_Panel extends JPanel implements ActionListener {
         JOptionPane.showMessageDialog(this, message, "Pokemon Search v2.0.3", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    private void findImageIcon() {
+        java.net.URL imageURL = PokemonSearch_Panel.class.getResource("Pokeball.png");
+
+        if (imageURL != null)
+            image = new ImageIcon(imageURL, "Pokeball");
+        else
+            System.out.println("Couldn't find file: Pokeball.png");
+    }
+
     // Reads from the locally stored file 'pokeInfo'
     private void readPokeInfo() {
+        ListModelObject tempSLM;
 
         // To prevent an infinite loop
         failSafe++;
@@ -105,14 +121,22 @@ public class PokemonSearch_Panel extends JPanel implements ActionListener {
             pokeInfoJSONVersion = pspJsonReader.get("version").get(0);
 
             typeList = pspJsonReader.get("types");
-            typeCL = new List(9, true);
-            for (int i = 0; i < typeList.size(); i++)
-                typeCL.add(typeList.get(i));
+            tempDLM = new DefaultListModel<>();
+            for (int i = 0; i < typeList.size(); i++) {
+                tempSLM = new ListModelObject(typeList.get(i));
+                tempDLM.addElement(tempSLM);
+            }
+            typeJL = new JList<>(tempDLM);
+            typeJL.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
             regionList = pspJsonReader.get("regions");
-            regionCL = new List(9, true);
-            for (int i = 0; i < regionList.size(); i = i + 2)
-                regionCL.add(regionList.get(i));
+            tempDLM = new DefaultListModel<>();
+            for (int i = 0; i < regionList.size(); i = i + 2) {
+                tempSLM = new ListModelObject(regionList.get(i));
+                tempDLM.addElement(tempSLM);
+            }
+            regionJL = new JList<>(tempDLM);
+            regionJL.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
             // Download 'pokeInfo' if the file is not found
             // or if the version number is unobtainable
@@ -218,93 +242,101 @@ public class PokemonSearch_Panel extends JPanel implements ActionListener {
     // TODO: Implement 'clear' button to search bar
     // Sets up the panels, buttons, lists, and text fields
     private void setUpPanels() {
-        searchBarPanel = new JPanel(new GridLayout(2, 1));
+        ArrayList<JComponent> componentList = new ArrayList<>();
+        String border = "|}>----------<{::}>----------<{::}>----------<{|";
+        ListModelObject tempSLM;
 
-        evolutionCL = new List(4, true);
-        evolutionCL.add("The Only Evolution");
-        evolutionCL.add("The First Evolution");
-        evolutionCL.add("The Middle Evolution");
-        evolutionCL.add("The Final Evolution");
-
-        searchBarLabel = new JLabel("   Pokemon Search!");
-        regionLabel = new JLabel("Region(s)");
-        typeLabel = new JLabel("Type(s)");
-
-        searchTF = new JTextField(12);
-        enterB = new JButton("Enter");
-
-        searchTF.addActionListener(this);
-        enterB.addActionListener(this);
-
-        searchBarPanel.add(searchBarLabel);
-        searchBarPanel.add(searchTF);
+        JPanel searchBarPanel = new JPanel(new GridLayout(2, 1));
         searchBarPanel.setBackground(new Color(240, 0, 0));
+        searchBarPanel.add(new JLabel("POKEMON SEARCH!"));
+        searchTF = new JTextField(12);
+        searchTF.addActionListener(this);
+        searchBarPanel.add(searchTF);
+        componentList.add(searchBarPanel);
 
-        setGBC(0, 0);
-        add(searchBarPanel, gbc);
-        setGBC(0, 1);
-        add(typeLabel, gbc);
-        setGBC(0, 2);
-        add(typeCL, gbc);
-        setGBC(0, 3);
-        add(regionLabel, gbc);
-        setGBC(0, 4);
-        add(regionCL, gbc);
-        setGBC(0, 5);
-        add(evolutionCL, gbc);
-        setGBC(0, 6);
-        add(enterB, gbc);
+        componentList.add(new JLabel(border));
+
+        componentList.add(new JLabel("TYPE(S)"));
+
+        // TODO: Implement check boxes
+        JCheckBox checkBox1 = new JCheckBox("(WIP)"); // Find pokemon that have both selected types (max 2 selections)
+        checkBox1.setBackground(new Color(240, 0, 0));
+        componentList.add(checkBox1);
+
+        JCheckBox checkBox2 = new JCheckBox("(WIP)"); // Exclude pokemon that have the selected type(s)
+        checkBox2.setBackground(new Color(240, 0, 0));
+        componentList.add(checkBox2);
+
+        JScrollPane typePane = new JScrollPane(typeJL);
+        typePane.setMinimumSize(new Dimension(65, 145));
+        componentList.add(typePane);
+
+        componentList.add(new JLabel(border));
+
+        componentList.add(new JLabel("REGION(S)"));
+
+        JScrollPane regionPane = new JScrollPane(regionJL);
+        regionPane.setMinimumSize(new Dimension(100, 95));
+        componentList.add(regionPane);
+
+        componentList.add(new JLabel(border));
+
+        String[] tempString = { "Only", "First", "Second", "Final" };
+        tempDLM = new DefaultListModel<>();
+        for (int i = 0; i < tempString.length; i++) {
+            tempSLM = new ListModelObject("The " + tempString[i] + " Evolution");
+            tempDLM.addElement(tempSLM);
+        }
+        evolutionJL = new JList<>(tempDLM);
+        evolutionJL.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        componentList.add(evolutionJL);
+
+        componentList.add(new JLabel(border));
+
+        JButton enterB = new JButton("Enter");
+        enterB.addActionListener(this);
+        componentList.add(enterB);
+
+        componentList.add(new JLabel("[Do \'Ctrl-Click\'' to select multiple items.]"));
+
+        for (int b = 0; b < componentList.size(); b++) {
+            add(componentList.get(b), setGBC(0, b));
+        }
     }
 
-    // Does this really need explaining
-    private void setGBC(int gridX, int gridY) {
+    private GridBagConstraints setGBC(int gridX, int gridY) {
         gbc.gridx = gridX;
         gbc.gridy = gridY;
+        return gbc;
     }
 
     public void actionPerformed(ActionEvent a) {
         regionInput = new ArrayList<String>();
         typeInput = new ArrayList<String>();
         evolutionInput = new ArrayList<String>();
-        input = searchTF.getText();
-        input = input.replaceAll(" ", "");
+        input = searchTF.getText().replaceAll(" ", "");
 
         try {
             // Attempt to search by number, if unable too, search by other means
             pokeSearch.searchByNumber(Integer.parseInt(input), regionList);
 
         } catch (NumberFormatException n) {
-            // Get the selected items from 'regionCL'
-            for (String r : regionCL.getSelectedItems())
-                regionInput.add(r);
+            // Get the selected items from 'regionJL'
+            for (int r : regionJL.getSelectedIndices())
+                regionInput.add(regionList.get(r * 2));
             if (regionInput.size() == 0)
                 for (int i = 0; i < regionList.size(); i = i + 2)
                     regionInput.add(regionList.get(i));
 
-            // Get the selected items from 'typeCL'
-            for (String t : typeCL.getSelectedItems())
-                typeInput.add(t);
-            if (typeList.equals(typeInput))
-                typeInput = new ArrayList<String>();
+            // Get the selected items from 'typeJL'
+            for (int t : typeJL.getSelectedIndices())
+                typeInput.add(typeList.get(t));
 
-            // Get the selected item from 'evolutionCL'
+            // Get the selected item from 'evolutionJL'
             // and translate it into 'evolutionInput'
-            for (String e : evolutionCL.getSelectedItems()) {
-                if (e.contains("Only")) {
-                    evolutionInput.add("0");
+            for (int e : evolutionJL.getSelectedIndices())
+                evolutionInput.add("" + e);
 
-                } else if (e.contains("First")) {
-                    if (!evolutionInput.contains("0"))
-                        evolutionInput.add("0");
-                    evolutionInput.add("1");
-
-                } else if (e.contains("Middle")) {
-                    evolutionInput.add("2");
-
-                } else if (e.contains("Final")) {
-                    evolutionInput.add("3");
-                }
-            }
             pokeSearch.findPokemon(regionInput, typeInput, evolutionInput, input);
         }
     }

@@ -7,14 +7,16 @@
 
 import utility.json.JSONReader;
 
-// import javax.swing.JOptionPane;
-import javax.swing.DefaultListModel;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
+import java.awt.Font;
 
 import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
+
+// import javax.swing.JOptionPane;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 /**
  * @author Nathin Wascher
@@ -23,10 +25,9 @@ public class PokemonSearch_Searcher {
     private final int NAME = 0, NUMBER = 2, TYPE = 4, EVOLUTION = 6, OBJECT_LENGTH = 8;
 
     private JSONReader pssJsonReader;
+    private DefaultListModel<PokemonObject> listModel;
+    private JList<PokemonObject> outputJList;
     private ArrayList<String> pokedex, tempPokedex;
-
-    private DefaultListModel<PokemonSearch_Pokemon> listModel;
-    private JList<PokemonSearch_Pokemon> outputJList;
 
     public JScrollPane outputListPane;
 
@@ -38,6 +39,7 @@ public class PokemonSearch_Searcher {
         this.pssJsonReader = jsonReader;
         listModel = new DefaultListModel<>();
         outputJList = new JList<>(listModel);
+        outputJList.setFont(new Font("Monospaced", Font.BOLD, 10));
         outputListPane = new JScrollPane(outputJList);
     }
 
@@ -57,7 +59,7 @@ public class PokemonSearch_Searcher {
      * @param findEvolutionSetNum
      */
     private void searchByNumber(int input, ArrayList<String> regionList, boolean findEvolutionSetNum) {
-        PokemonSearch_Pokemon tempPSP;
+        PokemonObject tempPSP;
         String[] tempArray;
         String tempString;
         int tempInt, arrayPos = 1;
@@ -96,7 +98,7 @@ public class PokemonSearch_Searcher {
                 tempInt = Integer.parseInt(pokedex.get(g + 1));
 
                 if (input == tempInt) {
-                    tempPSP = new PokemonSearch_Pokemon();
+                    tempPSP = new PokemonObject();
                     tempPSP.processInfo(pokedex, g - NUMBER);
                     listModel.addElement(tempPSP);
                     g = pokedex.size();
@@ -111,7 +113,7 @@ public class PokemonSearch_Searcher {
                 tempInt = Integer.parseInt(pokedex.get(g + 1).split("-")[0]);
 
                 if (input == tempInt) {
-                    tempPSP = new PokemonSearch_Pokemon();
+                    tempPSP = new PokemonObject();
                     tempPSP.processInfo(pokedex, g - EVOLUTION);
                     listModel.addElement(tempPSP);
                 }
@@ -128,12 +130,10 @@ public class PokemonSearch_Searcher {
      */
     public void findPokemon(ArrayList<String> regionInput, ArrayList<String> typeInput,
             ArrayList<String> evolutionInput, String input) {
-        PokemonSearch_Pokemon tempPSP;
+        PokemonObject tempPSP;
         String tempString;
         outputJList.removeAll();
         listModel.removeAllElements();
-
-        long startTime = System.nanoTime();
 
         searchByRegion(regionInput);
 
@@ -151,14 +151,12 @@ public class PokemonSearch_Searcher {
             tempString = pokedex.get(f);
 
             if (tempString.equals("name")) {
-                tempPSP = new PokemonSearch_Pokemon();
+                tempPSP = new PokemonObject();
                 tempPSP.processInfo(pokedex, f + NAME);
                 listModel.addElement(tempPSP);
             }
         }
         outputJList.setModel(listModel);
-        System.out
-                .println("\nElapsed Time: " + (double) ((System.nanoTime() - startTime) / 1000000) / 1000 + " Seconds");
     }
 
     /**

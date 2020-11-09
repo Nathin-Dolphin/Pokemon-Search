@@ -1,3 +1,7 @@
+Pokemon Search v2.0.4
+ - 'PokemonSearch_Pokemon.java' renamed to 'PokemonObject.java' as it is planned to be used in PokedexWriter
+ - Finished replacing awt.list with swing.JList
+
 Pokemon Search v2.0.3
  - JList and DefaultListModel now use 'pokemon' objects to print to the screen
 

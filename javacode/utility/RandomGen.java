@@ -40,8 +40,8 @@ import java.awt.Color;
  * gray.
  * 
  * @author Nathin Wascher
- * @version 1.3.1
- * @since Februrary 27, 2020
+ * @version RandomGen v1.3.2
+ * @since November 8, 2020
  * 
  * @see Color
  * @see Random
@@ -51,7 +51,6 @@ public class RandomGen extends Random {
    private static final long serialVersionUID = 7005972888370276446L;
 
    private char[] characters;
-   private char letter;
    private int r, g, b;
 
    public RandomGen() {
@@ -68,7 +67,7 @@ public class RandomGen extends Random {
     * @see #fullLetterGen()
     */
    public char letterGen() {
-      return Character.toLowerCase(fullLetterGen());
+      return characters[intGen(0, 25)];
    }
 
    /**
@@ -78,11 +77,10 @@ public class RandomGen extends Random {
     * @see #intGen(int, int)
     */
    public char fullLetterGen() {
-      letter = characters[intGen(0, 25)];
       if (boolGen())
-         return Character.toUpperCase(letter);
+         return Character.toUpperCase(letterGen());
       else
-         return letter;
+         return letterGen();
    }
 
    /**

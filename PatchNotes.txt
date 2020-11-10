@@ -1,3 +1,6 @@
+Pokemon Search v2.0.5
+ - It automatically searches for pokemon instead of the user needing to press the 'enter' button
+
 Pokemon Search v2.0.4
  - 'PokemonSearch_Pokemon.java' renamed to 'PokemonObject.java' as it is planned to be used in PokedexWriter
  - Finished replacing awt.list with swing.JList

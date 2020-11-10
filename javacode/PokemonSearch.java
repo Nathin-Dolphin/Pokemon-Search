@@ -6,13 +6,17 @@
  */
 
 /**
+ * <p>
+ * <b>[!] Known Issues:</b>
+ * <p>
+ * The list does not update at start up
+ * 
  * @author Nathin Wascher
- * @version PokemonSearch v2.0.4
- * @since November 8, 2020
+ * @version PokemonSearch v2.0.5
+ * @since November 10, 2020
  */
 
 public class PokemonSearch {
-
     public PokemonSearch() {
         main(null);
     }

@@ -1,3 +1,6 @@
+Pokemon Search v2.0.6
+ - Some minor optimization tweaks
+
 Pokemon Search v2.0.5
  - It automatically searches for pokemon instead of the user needing to press the 'enter' button
 
@@ -17,6 +20,10 @@ Pokemon Search v2.0.1
 Pokemon Search v2.0
  - Search for Pokémon by name, number, type, and evolution
 
+
+Pokedex Writer v2.2
+ - Lists are changed to JLists
+ - Added an image to the title bar
 
 Pokedex Writer v2.1
  - Created a screen that allows the user to input the necessary arguments instead of through the terminal

@@ -5,36 +5,42 @@
  * This file is under the MIT License.
  */
 
+import utility.ListModelObject;
+import utility.Misc;
+import utility.SimpleFrame;
 import utility.json.JSONReader;
 import utility.json.JSONWriter;
 import utility.json.URLReader;
 
-import utility.SimpleFrame;
-
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.List;
 
-import java.io.FileNotFoundException;
 import java.io.BufferedWriter;
-import java.io.PrintWriter;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.PrintWriter;
+
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 import java.util.ArrayList;
 
 /**
  * @author Nathin Wascher
  */
+@SuppressWarnings("serial")
 public class PokedexWriter_Panel extends PokedexWriter_Writer {
-    private static final long serialVersionUID = 2628539169557674903L;
     private final String pokeInfoURL = "https://jsontextfiles.azurewebsites.net/pokeInfo.json";
 
+    private DefaultListModel<ListModelObject> tempLMO;
     private SimpleFrame frame;
     private GridBagConstraints gbc;
     private JSONReader pwpJsonReader;
@@ -44,59 +50,57 @@ public class PokedexWriter_Panel extends PokedexWriter_Writer {
     private JPanel controlPanel;
     private JPanel topPanel, middlePanel, bottomPanel, evoNumPanel, nameBarPanel;
 
-    private JLabel regionHighJL, regionLowJL, nameJL, evolutionJL, evoNumJL, type1JL, type2JL;
+    private ImageIcon image;
+    private JLabel regionHighJLabel, regionLowJLabel, nameJLabel, evolutionJLabel, evoNumJLabel, type1JLabel,
+            type2JLabel;
 
     private ArrayList<String> tempArray;
-    // private int paneValue;
 
-    public PokedexWriter_Panel() {
-    }
-
-    public PokedexWriter_Panel(String regionName) {
+    /**
+     * 
+     * @param regionName The name of the json (and the pokemon region)
+     * @param mode       '1' = Write a new Pokedex; '2' = Write a new Pokedex with a
+     *                   URL; '3' = Modify a pokedex
+     */
+    public PokedexWriter_Panel(String regionName, int mode) {
         setUp(regionName);
 
-        // Temporarly initialize 'min' and 'max' to a
-        // value so the frame is created properly
-        min = 0;
-        max = 1;
-
-        setLayout(new GridBagLayout());
-        setUpControlPanel();
-
-        setGBC(0, 0);
-        add(outputList, gbc);
-        setGBC(1, 0);
-        add(controlPanel, gbc);
-
-        frame.add(this);
-        frame.setVisible(true);
-
-        modifyFile();
-    }
-
-    public PokedexWriter_Panel(String regionName, boolean useURL) {
-        setUp(regionName);
-
-        if (!useURL)
+        if (mode == 1) {
             initializeRange();
+        } else if (mode == 3) {
+            // Temporarly initialize 'min' and 'max' to a
+            // value so the frame is created properly
+            min = 0;
+            max = 1;
+        }
+
         setLayout(new GridBagLayout());
         setUpControlPanel();
 
-        setGBC(0, 0);
-        add(outputList, gbc);
-        setGBC(1, 0);
-        add(controlPanel, gbc);
+        add(outputListPane, Misc.setGBC(gbc, 0, 0));
+        add(controlPanel, Misc.setGBC(gbc, 1, 0));
 
         frame.add(this);
         frame.setVisible(true);
 
-        if (useURL)
+        if (mode == 2)
+            modifyFile();
+        else if (mode == 3)
             openURL();
     }
 
+    private void createImageIcon() {
+        java.net.URL imgURL = PokemonSearch_Panel.class.getResource("Pokeball.png");
+
+        if (imgURL != null)
+            image = new ImageIcon(imgURL, "Pokeball");
+        else
+            System.out.println("Couldn't find file: Pokeball.png");
+    }
+
     private void setUp(String regionName) {
-        // check other classes to remove redundant code that changes the letter casing
-        // for 'regionName'
+        createImageIcon();
+
         regionName = regionName.toLowerCase();
         String tempString = regionName;
         if (regionName.endsWith(".json")) {
@@ -104,11 +108,12 @@ public class PokedexWriter_Panel extends PokedexWriter_Writer {
         }
         tempString = regionName + ".json";
 
-        frame = new SimpleFrame("PokedexWriter", "Creating file: \"" + tempString + "\"", 900, 650, true);
+        frame = new SimpleFrame("PokedexWriter", "Creating file: \"" + tempString + "\"", 600, 500, true);
+        frame.setIconImage(image.getImage());
         gbc = new GridBagConstraints();
         pwpJsonReader = new JSONReader();
         pwwJsonWriter = new JSONWriter(this, tempString);
-        this.regionName = regionName;
+        setRegionName(regionName);
 
         // Attempt to read 'pokeInfo.json', or if
         // it doesn't exist, download neccessary files
@@ -118,14 +123,14 @@ public class PokedexWriter_Panel extends PokedexWriter_Writer {
             regionList = pwpJsonReader.get("regions");
         } catch (FileNotFoundException e) {
             try {
-                downloadPokeInfo();
+                downloadPokeInfo(regionName);
             } catch (Exception x) {
                 System.out.println("ERROR: UNKNOWN ERROR");
             }
         }
     }
 
-    private void downloadPokeInfo() {
+    private void downloadPokeInfo(String regionName) {
         System.out.println("Downloading file: pokeInfo.json");
         urlReader = new URLReader();
         tempArray = urlReader.readURL(pokeInfoURL);
@@ -200,73 +205,75 @@ public class PokedexWriter_Panel extends PokedexWriter_Writer {
         setUpMiddlePanel();
         setUpBottomPanel();
 
-        setGBC(0, 0);
-        controlPanel.add(topPanel, gbc);
-        setGBC(0, 1);
-        controlPanel.add(middlePanel, gbc);
-        setGBC(0, 2);
-        controlPanel.add(bottomPanel, gbc);
+        controlPanel.add(topPanel, Misc.setGBC(gbc, 0, 0));
+        controlPanel.add(middlePanel, Misc.setGBC(gbc, 0, 1));
+        controlPanel.add(bottomPanel, Misc.setGBC(gbc, 0, 2));
     }
 
     private void setUpTopPanel() {
         topPanel = new JPanel(new GridBagLayout());
 
-        regionLowJL = new JLabel("Min Region Range: ");
+        regionLowJLabel = new JLabel("Min Region Range: ");
         minJTF = new JTextField(String.valueOf(min), 3);
 
-        setGBC(0, 0);
-        topPanel.add(regionLowJL, gbc);
-        setGBC(1, 0);
-        topPanel.add(minJTF, gbc);
+        topPanel.add(regionLowJLabel, Misc.setGBC(gbc, 0, 0));
+        topPanel.add(minJTF, Misc.setGBC(gbc, 1, 0));
 
-        regionHighJL = new JLabel("Max Region Range: ");
+        regionHighJLabel = new JLabel("Max Region Range: ");
         maxJTF = new JTextField(String.valueOf(max), 3);
 
-        setGBC(0, 1);
-        topPanel.add(regionHighJL, gbc);
-        setGBC(1, 1);
-        topPanel.add(maxJTF, gbc);
+        topPanel.add(regionHighJLabel, Misc.setGBC(gbc, 0, 1));
+        topPanel.add(maxJTF, Misc.setGBC(gbc, 1, 1));
     }
 
     private void setUpMiddlePanel() {
         middlePanel = new JPanel(new GridBagLayout());
         nameBarPanel = new JPanel(new GridBagLayout());
 
-        nameJL = new JLabel("Pokemon Name: ");
+        nameJLabel = new JLabel("Pokemon Name: ");
         nameJTF = new JTextField(10);
         nameJTF.addActionListener(this);
 
-        setGBC(0, 0);
-        nameBarPanel.add(nameJL, gbc);
-        setGBC(1, 0);
-        nameBarPanel.add(nameJTF, gbc);
+        nameBarPanel.add(nameJLabel, Misc.setGBC(gbc, 0, 0));
+        nameBarPanel.add(nameJTF, Misc.setGBC(gbc, 1, 0));
 
         gbc.gridwidth = 2;
-        setGBC(0, 0);
-        middlePanel.add(nameBarPanel, gbc);
+        middlePanel.add(nameBarPanel, Misc.setGBC(gbc, 0, 0));
         gbc.gridwidth = 1;
 
-        type1JL = new JLabel("Primary Type");
-        type2JL = new JLabel("Secondary Type");
+        type1JLabel = new JLabel("Primary Type");
+        type2JLabel = new JLabel("Secondary Type");
+        {
+            tempLMO = new DefaultListModel<>();
+            for (String t : typeList)
+                tempLMO.addElement(new ListModelObject(t));
 
-        type1CL = new List(15);
-        type2CL = new List(15);
-        type2CL.add("none");
-        for (String s : typeList) {
-            type1CL.add(s);
-            type2CL.add(s);
+            type1JList = new JList<>(tempLMO);
+            type1JList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            type1JList.setVisibleRowCount(8);
+            type1JList.setSelectedIndex(0);
+
+            JScrollPane type1Pane = new JScrollPane(type1JList);
+
+            middlePanel.add(type1JLabel, Misc.setGBC(gbc, 0, 1));
+            middlePanel.add(type1Pane, Misc.setGBC(gbc, 0, 2));
         }
-        type1CL.select(0);
-        type2CL.select(0);
+        { //
+            tempLMO = new DefaultListModel<>();
+            tempLMO.addElement(new ListModelObject("none"));
+            for (String t : typeList)
+                tempLMO.addElement(new ListModelObject(t));
 
-        setGBC(0, 1);
-        middlePanel.add(type1JL, gbc);
-        setGBC(0, 2);
-        middlePanel.add(type1CL, gbc);
-        setGBC(1, 1);
-        middlePanel.add(type2JL, gbc);
-        setGBC(1, 2);
-        middlePanel.add(type2CL, gbc);
+            type2JList = new JList<>(tempLMO);
+            type2JList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            type2JList.setVisibleRowCount(8);
+            type2JList.setSelectedIndex(0);
+
+            JScrollPane type2Pane = new JScrollPane(type2JList);
+
+            middlePanel.add(type2JLabel, Misc.setGBC(gbc, 1, 1));
+            middlePanel.add(type2Pane, Misc.setGBC(gbc, 1, 2));
+        }
     }
 
     private void setUpBottomPanel() {
@@ -275,40 +282,31 @@ public class PokedexWriter_Panel extends PokedexWriter_Writer {
 
         nextEvoNumJB = new JButton("Next EvoNum");
         nextEvoNumJB.addActionListener(this);
-        evoNumJL = new JLabel(" EvoNumber: ");
+        evoNumJLabel = new JLabel(" EvoNumber: ");
         evoNumJTF = new JTextField("000", 3);
 
-        setGBC(0, 0);
-        evoNumPanel.add(nextEvoNumJB, gbc);
-        setGBC(0, 1);
-        evoNumPanel.add(evoNumJL, gbc);
-        setGBC(0, 2);
-        evoNumPanel.add(evoNumJTF, gbc);
+        evoNumPanel.add(nextEvoNumJB, Misc.setGBC(gbc, 0, 0));
+        evoNumPanel.add(evoNumJLabel, Misc.setGBC(gbc, 0, 1));
+        evoNumPanel.add(evoNumJTF, Misc.setGBC(gbc, 0, 2));
 
-        evolutionJL = new JLabel("Evolution State");
-        evolutionCL = new List(5);
+        evolutionJLabel = new JLabel("Evolution State");
+        tempLMO = new DefaultListModel<>();
         for (String s : evolutionStates)
-            evolutionCL.add(s);
-        evolutionCL.select(1);
+            tempLMO.addElement(new ListModelObject(s));
+        evolutionJList = new JList<>(tempLMO);
+        type1JList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        evolutionJList.setSelectedIndex(1);
 
-        setGBC(0, 0);
-        bottomPanel.add(evolutionJL, gbc);
-        setGBC(0, 1);
-        bottomPanel.add(evolutionCL, gbc);
-        setGBC(1, 1);
-        bottomPanel.add(evoNumPanel, gbc);
+        bottomPanel.add(evolutionJLabel, Misc.setGBC(gbc, 0, 0));
+        bottomPanel.add(evolutionJList, Misc.setGBC(gbc, 0, 1));
+        bottomPanel.add(evoNumPanel, Misc.setGBC(gbc, 1, 1));
 
         enterJB = new JButton("Next Pokemon");
         enterJB.addActionListener(this);
 
         gbc.gridwidth = 2;
-        setGBC(0, 2);
-        bottomPanel.add(enterJB, gbc);
+        gbc = Misc.setGBC(gbc, 0, 2);
+        bottomPanel.add(enterJB, Misc.setGBC(gbc, 0, 2));
         gbc.gridwidth = 1;
-    }
-
-    private void setGBC(int gridX, int gridY) {
-        gbc.gridx = gridX;
-        gbc.gridy = gridY;
     }
 }

@@ -37,16 +37,20 @@ At the specified locations in the terminal, enter these commands in order,
 	(Implemented) - Add pop-up informational box before starting program
 
   ## Version 3.0 Features:
+	(WIP) - When the user clicks on a pokemon, create a pop-up that has more information on that pokemon
 	() - Implement option to search by size
 	() - Implement option to search by weight
 	() - Implement option to search by weaknessess
-    
-    
+
+
 # PokedexWriter
   ## Version 1.0 Features:
 	(Implemented) - Add every pokemon to the json files
 	(Implemented) - Be able to easily modify already existing files
+
   ## Version 2.0 Features:
+	() - When the user clicks on a pokemon, create a pop-up that has more information on that pokemon
 	() - Add pokemon size
 	() - Add pokemon weight
 	() - Add pokemon weakness
+	() - Implement a save feature

@@ -12,8 +12,7 @@
  * The list does not update at start up
  * 
  * @author Nathin Wascher
- * @version PokemonSearch v2.0.5
- * @since November 10, 2020
+ * @version v2.0.6 - November 10, 2020
  */
 
 public class PokemonSearch {

@@ -6,6 +6,7 @@
  */
 
 import utility.ListModelObject;
+import utility.Misc;
 import utility.SimpleFrame;
 import utility.json.JSONReader;
 import utility.json.URLReader;
@@ -329,14 +330,8 @@ public class PokemonSearch_Panel extends JPanel implements ListSelectionListener
         componentList.add(new JLabel("[Do \'Shift-Click to select all between two selections.]"));
 
         for (int b = 0; b < componentList.size(); b++) {
-            add(componentList.get(b), setGBC(0, b));
+            add(componentList.get(b), Misc.setGBC(gbc, 0, b));
         }
-    }
-
-    private GridBagConstraints setGBC(int gridX, int gridY) {
-        gbc.gridx = gridX;
-        gbc.gridy = gridY;
-        return gbc;
     }
 
     // Attempt to search by number .....

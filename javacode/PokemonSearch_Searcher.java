@@ -11,17 +11,19 @@ import java.awt.Font;
 
 import java.io.FileNotFoundException;
 
-import java.util.ArrayList;
-
-// import javax.swing.JOptionPane;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import java.util.ArrayList;
+
 /**
  * @author Nathin Wascher
  */
-public class PokemonSearch_Searcher {
+public class PokemonSearch_Searcher implements ListSelectionListener {
     private final int NAME = 0, NUMBER = 2, TYPE = 4, EVOLUTION = 6, OBJECT_LENGTH = 8;
 
     private JSONReader pssJsonReader;
@@ -39,6 +41,7 @@ public class PokemonSearch_Searcher {
         this.pssJsonReader = jsonReader;
         listModel = new DefaultListModel<>();
         outputJList = new JList<>(listModel);
+        outputJList.addListSelectionListener(this);
         outputJList.setFont(new Font("Monospaced", Font.BOLD, 10));
         outputListPane = new JScrollPane(outputJList);
     }
@@ -239,5 +242,12 @@ public class PokemonSearch_Searcher {
         }
     }
 
-    // private void pokemonInformationPane() {}
+    @Override
+    public void valueChanged(ListSelectionEvent l) {
+        if (l.getValueIsAdjusting()) {
+            // TODO: Use a different method to run this code
+            int tempInt = outputJList.getSelectedIndex();
+            listModel.get(tempInt).showInfoBox();
+        }
+    }
 }

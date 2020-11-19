@@ -2,7 +2,7 @@
 /**
  * Copyright (c) 2020 Nathin-Dolphin.
  * 
- * This file is under the MIT License.
+ * This file is part of the utility library and is under the MIT License.
  */
 
 package utility;
@@ -11,8 +11,7 @@ package utility;
  * This class is strictly used in conjunction with DefaultListModel and JList
  * 
  * @author Nathin Wascher
- * @version ListModelObject v1.0
- * @since November 8, 2020
+ * @version v1.0.1 - November 19, 2020
  * 
  * @see javax.swing.DefaultListModel
  * @see javax.swing.JList

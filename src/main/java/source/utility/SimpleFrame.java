@@ -5,7 +5,7 @@
  * This file is part of the utility library and is under the MIT License.
  */
 
-package utility;
+package source.utility;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -23,20 +23,26 @@ import javax.swing.JOptionPane;
  * <b>No Known Issues</b>
  * 
  * @author Nathin Wascher
- * @version SimpleFrame v1.1.5
- * @since November 8, 2020
+ * @version v1.1.6 - November 20, 2020
  * 
  * @see JFrame
  * @see JOptionPane
  * @see java.awt.event.WindowListener#windowClosing
  */
-
+@SuppressWarnings("serial")
 public class SimpleFrame extends JFrame {
-    private static final long serialVersionUID = -7776272663682391914L;
+
+    private static final int DEFAULT_WIDTH = 770;
+    private static final int DEFAULT_HEIGHT = 500;
+
+    private static final int MAX_WIDTH = 1540;
+    private static final int MAX_HEIGHT = 840;
 
     private ImageIcon titleImage;
-    private String javaFileName, frameTitle;
-    private boolean fullscreen = false, addWarningWindow = false;
+    private String javaFileName;
+    private String frameTitle;
+    private boolean fullscreen;
+    private boolean addWarningWindow;
 
     /**
      * Overloaded Method
@@ -272,21 +278,21 @@ public class SimpleFrame extends JFrame {
 
     // Overloaded method
     private void newFrame() {
-        newFrame(770, 500);
+        newFrame(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     // Creates a new JFrame with the variables from the constructor
     private void newFrame(int width, int height) {
         setTitle(frameTitle);
-        setBounds((1540 - width) / 2, (840 - height) / 2, width, height);
+        setBounds((MAX_WIDTH - width) / 2, (MAX_HEIGHT - height) / 2, width, height);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        if (fullscreen)
+        if (fullscreen) {
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        if (titleImage != null)
+        }
+        if (titleImage != null) {
             setIconImage(titleImage.getImage());
-
+        }
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 systemExit();

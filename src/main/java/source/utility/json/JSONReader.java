@@ -5,10 +5,10 @@
  * This file is part of the utility library and is under the MIT License.
  */
 
-package utility.json;
+package source.utility.json;
 
-import java.io.FileNotFoundException;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -31,23 +31,24 @@ import java.util.Scanner;
  * it will add the next {@code String} to the {@code ArrayList<String>}.
  * 
  * @author Nathin Wascher
- * @version 1.6
- * @since October 22, 2020
+ * @version v1.6.1 - November 20, 2020
  * 
  * @see JSONParser
  */
 
 public class JSONReader extends JSONParser {
     private Scanner fileScan;
-    private ArrayList<String> jsonContents, BracketedContents, BracketlessContents;
+    private ArrayList<String> jsonContents;
+    private ArrayList<String> bracketedContents;
+    private ArrayList<String> bracketlessContents;
     private String nextLine;
+
+    public JSONReader() {
+    }
 
     public void run(String fileName) throws FileNotFoundException {
         System.out.println("JSONReader Thread: " + fileName);
         readJSON(fileName);
-    }
-
-    public JSONReader() {
     }
 
     /**
@@ -68,24 +69,25 @@ public class JSONReader extends JSONParser {
      * @see JSONParser
      */
     public ArrayList<String> readJSON(String fileName, boolean includeBrackets) throws FileNotFoundException {
-        if (fileName.endsWith(".json"))
+        if (fileName.endsWith(".json")) {
             fileScan = new Scanner(new File(fileName));
-        else
+        } else {
             fileScan = new Scanner(new File(fileName + ".json"));
+        }
 
         jsonContents = new ArrayList<String>();
-        BracketedContents = new ArrayList<String>();
+        bracketedContents = new ArrayList<String>();
         while (fileScan.hasNextLine()) {
             nextLine = fileScan.nextLine();
             jsonContents.add(nextLine);
         }
 
         if (includeBrackets) {
-            BracketedContents = parseJSON(jsonContents, true);
-            return BracketedContents;
+            bracketedContents = parseJSON(jsonContents, true);
+            return bracketedContents;
         }
-        BracketlessContents = parseJSON(jsonContents, false);
-        return BracketlessContents;
+        bracketlessContents = parseJSON(jsonContents, false);
+        return bracketlessContents;
     }
 
     /**

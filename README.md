@@ -1,23 +1,19 @@
 # Program Execution
 
-[!] IMPORTANT PLEASE READ [!] NOTES: 
+[!] IMPORTANT PLEASE READ [!]: 
 
-	'...' is the path from your storage device to the location of the repository (for Windows terminal at least).
+	'...' is the path from your storage device to the location of the repository.
 
-	[!] The method of compiling and running was done on a Windows computer, if you are using a MAC, the instructions may be confusing. If this is so, anything before the '>' is the terminal on Windows Powershell showing the current directory. After that, it is the actual command, however when doing 'javac' make sure to compile into the 'class' folder from the 'javacode' folder. [!]
-
-## Create Class Files:
-At the specified locations in the terminal, enter these commands in order,
-
-	...> cd ...\Pokemon-Search
-	...\Pokemon-Search> javac -d '...\Pokemon-Search\class' *.java
-	...\Pokemon-Search> cd class
+	[!] The method of compiling and running was done on a Windows computer, if you are using a MAC, the instructions may be confusing. If this is so, anything before the '>' is the Window PowerShell showing the current directory. After '>' is the actual command. [!]
 
 ## Execute Program
 
-	...\Pokemon-Search\class> java PokemonSearch
-  	...\Pokemon-Search\class> java PokedexWriter
+	'version' is the current version number of PokemonSearch
 
+	...> cd ...\Pokemon-Search
+	...\Pokemon-Search> java -jar PokemonSearch-'version'.jar
+
+		Ex. java -jar PokemonSearch-2.1.jar
 
 ## PokemonSearch
   ## Version 1.0 Features:
@@ -37,20 +33,7 @@ At the specified locations in the terminal, enter these commands in order,
 	(Implemented) - Add pop-up informational box before starting program
 
   ## Version 3.0 Features:
-	(WIP) - When the user clicks on a pokemon, create a pop-up that has more information on that pokemon
+	(Implemented) - When the user clicks on a pokemon, create a pop-up that has more information on that pokemon
 	() - Implement option to search by size
 	() - Implement option to search by weight
 	() - Implement option to search by weaknessess
-
-
-# PokedexWriter
-  ## Version 1.0 Features:
-	(Implemented) - Add every pokemon to the json files
-	(Implemented) - Be able to easily modify already existing files
-
-  ## Version 2.0 Features:
-	() - When the user clicks on a pokemon, create a pop-up that has more information on that pokemon
-	() - Add pokemon size
-	() - Add pokemon weight
-	() - Add pokemon weakness
-	() - Implement a save feature

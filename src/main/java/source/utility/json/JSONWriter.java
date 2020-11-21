@@ -5,29 +5,30 @@
  * This file is part of the utility library and is under the MIT License.
  */
 
-package utility.json;
-
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+package source.utility.json;
 
 import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.FileWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 /**
  * @author Nathin Wascher
- * @version 1.1.5
- * @since October 17, 2020
+ * @version v1.1.6 - November 20, 2020
  */
 public class JSONWriter {
-    private ArrayList<String> jsonContents, endBrackets;
-    private String tabs, fileName;
+    private ArrayList<String> jsonContents;
+    private ArrayList<String> endBrackets;
+    private String tabs;
+    private String fileName;
 
     /**
      * 
@@ -40,8 +41,9 @@ public class JSONWriter {
         endBrackets = new ArrayList<String>();
         tabs = "\t";
 
-        if (!fileName.endsWith(".json"))
-            fileName = fileName + ".json";
+        if (!fileName.endsWith(".json")) {
+            fileName.concat(".json");
+        }
         this.fileName = fileName;
         jsonContents.add("{");
 
@@ -70,19 +72,26 @@ public class JSONWriter {
         if (jsonContents.get(jsonContents.size() - 1).endsWith("}")) {
             jsonContents.remove(jsonContents.size() - 1);
             jsonContents.add(tabs + "},{");
-        } else
+        } else {
             jsonContents.add(tabs + "{");
+        }
 
-        for (int i = 0; i < input.size(); i++) {
-            tempString = tabs + "\t\"" + input.get(i) + "\": \"" + input.get(++i) + "\"";
-            if (i < input.size() - 1)
+        for (int i = 0; i < input.size(); i = i + 2) {
+            tempString = tabs + "\t\"" + input.get(i) + "\": \"" + input.get(i + 1) + "\"";
+            if (i < input.size() - 1) {
                 tempString = tempString + ",";
-
+            }
             jsonContents.add(tempString);
         }
         jsonContents.add(tabs + "}");
     }
 
+    /**
+     * WARNING: NOT IMPLEMENTED.
+     * 
+     * @param input
+     * @param name
+     */
     public void newObject(ArrayList<String> input, String name) {
         // TODO: Implement newObject(ArrayList<String>, String)
     }
@@ -106,17 +115,21 @@ public class JSONWriter {
         endBrackets.add("]");
     }
 
-    /** */
+    /**
+     * 
+     */
     public void endArray() {
         tabs = "";
-        for (int i = 0; i < endBrackets.size(); i++)
+        for (int i = 0; i < endBrackets.size(); i++) {
             tabs = tabs + "\t";
-
+        }
         jsonContents.add(tabs + endBrackets.get(endBrackets.size() - 1));
         endBrackets.remove(endBrackets.size() - 1);
     }
 
-    /** */
+    /** 
+     * 
+    */
     public void closeFile() {
         PrintWriter pw;
         jsonContents.add("}");
@@ -132,8 +145,9 @@ public class JSONWriter {
         }
 
         // TODO: Add loading bar here
-        for (int f = 0; f < jsonContents.size() - 1; f++)
+        for (int f = 0; f < jsonContents.size() - 1; f++) {
             pw.println(jsonContents.get(f));
+        }
         pw.print(jsonContents.get(jsonContents.size() - 1));
         pw.close();
     }

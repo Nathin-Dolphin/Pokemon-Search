@@ -5,33 +5,46 @@
  * This file is part of the utility library and is under the MIT License.
  */
 
-package utility;
+package source.utility;
 
 import java.awt.GridLayout;
+
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import java.util.ArrayList;
-
 /**
  * 
  * <p>
- * <b>No Known Issues</b>
+ * <b>No Known Issues.</b>
  * 
  * @author Nathin Wascher
- * @version v1.0 - November 19, 2020
+ * @version v1.0.1 - November 20, 2020
  * 
  * @see JFrame
  */
 @SuppressWarnings("serial")
-public class PopUpBox extends JPanel {
+public final class PopUpBox extends JPanel {
+
+    private static final int WIDTH_MULTIPLIER = 10;
+    private static final int HEIGHT_MULTIPLIER = 50;
+
+    private static final int MAX_WIDTH = 1540;
+    private static final int MAX_HEIGHT = 840;
+
     private ArrayList<JLabel> messageList;
     private ArrayList<String> contents;
     private String title;
-    private int width, height;
+    private int width;
+    private int height;
 
+    /**
+     * 
+     * @param title
+     * @param contents
+     */
     public PopUpBox(String title, ArrayList<String> contents) {
         messageList = new ArrayList<>();
         height = 0;
@@ -39,6 +52,9 @@ public class PopUpBox extends JPanel {
         this.contents = contents;
     }
 
+    /**
+     * 
+     */
     public void createBox() {
         JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -51,14 +67,15 @@ public class PopUpBox extends JPanel {
             this.add(messageList.get(h));
 
             height = h + 1;
-            if (width < contents.get(h).length())
+            if (width < contents.get(h).length()) {
                 width = contents.get(h).length();
+            }
         }
 
-        height = height * 50;
-        width = width * 10;
+        height = height * HEIGHT_MULTIPLIER;
+        width = width * WIDTH_MULTIPLIER;
 
-        frame.setBounds((1540 - width) / 2, (840 - height) / 2, width, height);
+        frame.setBounds((MAX_WIDTH - width) / 2, (MAX_HEIGHT - height) / 2, width, height);
 
         frame.add(this);
         frame.setVisible(true);

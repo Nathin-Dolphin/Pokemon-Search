@@ -5,16 +5,16 @@
  * This file is part of the utility library and is under the MIT License.
  */
 
-package utility.json;
+package source.utility.json;
 
-import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+
+import java.util.ArrayList;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import java.util.ArrayList;
 
 /**
  * Reads an {@code URL}, and if it leads to a {@code .json} file, stores the
@@ -33,8 +33,7 @@ import java.util.ArrayList;
  * <b>No Known Issues</b>
  * 
  * @author Nathin Wascher
- * @version 1.3.4
- * @since March 26, 2020
+ * @version v1.3.5 - November 20, 2020
  * 
  * @see JSONParser
  */
@@ -42,8 +41,9 @@ public class URLReader extends JSONParser {
     private BufferedReader br;
     private URL openURL;
 
-    private ArrayList<String> urlContents, urlIndexContents, urlList;
-    private String tempString;
+    private ArrayList<String> urlContents;
+    private ArrayList<String> urlIndexContents;
+    private ArrayList<String> urlList;
     private boolean validURL;
 
     public URLReader() {
@@ -87,6 +87,7 @@ public class URLReader extends JSONParser {
      *         Returns null if the {@code URL} is invalid
      */
     public ArrayList<String> readURL(String url, boolean printContents) {
+        String tempString;
         System.out.println("\nREADING URL:  " + url);
         if (isValidURL(url)) {
             urlContents = new ArrayList<String>();
@@ -95,8 +96,9 @@ public class URLReader extends JSONParser {
                 br = new BufferedReader(new InputStreamReader(openURL.openStream()));
                 while ((tempString = br.readLine()) != null) {
                     urlContents.add(tempString);
-                    if (printContents)
+                    if (printContents) {
                         System.out.println(tempString);
+                    }
                 }
                 br.close();
 
@@ -141,9 +143,10 @@ public class URLReader extends JSONParser {
         urlIndexContents = new ArrayList<String>();
 
         try {
-            for (String s : urlList)
+            for (String s : urlList) {
                 urlIndexContents.addAll(readURL(s, printContents));
-        } catch (Exception e) {
+            }
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Warning: No Valid URL Links");
         }
         return urlIndexContents;

@@ -5,11 +5,13 @@
  * This file is under the MIT License.
  */
 
-import utility.json.JSONReader;
+package source;
 
 import java.awt.Font;
 
 import java.io.FileNotFoundException;
+
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -18,20 +20,29 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import java.util.ArrayList;
+import source.utility.json.JSONReader;
 
 /**
  * @author Nathin Wascher
  */
 public class PokemonSearch_Searcher implements ListSelectionListener {
-    private final int NAME = 0, NUMBER = 2, TYPE = 4, EVOLUTION = 6, OBJECT_LENGTH = 8;
+    private static final String DIR = "resources\\";
+
+    // TODO: Have these values get calaculated from pokeInfo.json
+    private static final int NAME = 0;
+    private static final int NUMBER = 2;
+    private static final int TYPE = 4;
+    private static final int EVOLUTION = 6;
+    private static final int OBJECT_LENGTH = 8;
 
     private JSONReader pssJsonReader;
     private DefaultListModel<PokemonObject> listModel;
     private JList<PokemonObject> outputJList;
-    private ArrayList<String> pokedex, tempPokedex;
 
-    public JScrollPane outputListPane;
+    private JScrollPane outputListPane;
+
+    private ArrayList<String> pokedex;
+    private ArrayList<String> tempPokedex;
 
     /**
      * 
@@ -44,6 +55,10 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
         outputJList.addListSelectionListener(this);
         outputJList.setFont(new Font("Monospaced", Font.BOLD, 10));
         outputListPane = new JScrollPane(outputJList);
+    }
+
+    public JScrollPane getOutputListPane() {
+        return outputListPane;
     }
 
     /**
@@ -65,7 +80,8 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
         PokemonObject tempPSP;
         String[] tempArray;
         String tempString;
-        int tempInt, arrayPos = 1;
+        int tempInt;
+        int arrayPos = 1;
         pokedex = new ArrayList<String>();
 
         if (!findEvolutionSetNum) {
@@ -73,7 +89,7 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
             arrayPos = 0;
         }
 
-        for (int i = 1; i < regionList.size(); i = i + 2) {
+        breakpoint: for (int i = 1; i < regionList.size(); i = i + 2) {
             tempArray = regionList.get(i).split("-");
             tempInt = Integer.parseInt(tempArray[arrayPos]);
 
@@ -81,13 +97,14 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
                 tempString = regionList.get(i - 1);
 
                 try {
-                    pssJsonReader.readJSON(tempString + ".json");
+                    pssJsonReader.readJSON(DIR + tempString + ".json");
                     pokedex.addAll(pssJsonReader.get(tempString));
                 } catch (FileNotFoundException e) {
                     System.out.println("ERROR: UNABLE TO FIND \"" + tempString + ".json\".");
                 }
-                if (!findEvolutionSetNum)
-                    i = regionList.size();
+                if (!findEvolutionSetNum) {
+                    break breakpoint;
+                }
             }
         }
 
@@ -104,7 +121,7 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
                     tempPSP = new PokemonObject();
                     tempPSP.processInfo(pokedex, g - NUMBER);
                     listModel.addElement(tempPSP);
-                    g = pokedex.size();
+                    break;
                 }
             }
             searchByNumber(input, regionList, true);
@@ -140,20 +157,21 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
 
         searchByRegion(regionInput);
 
-        if (evolutionInput.size() != 0)
+        if (evolutionInput.size() != 0) {
             searchByEvolution(evolutionInput);
-
-        if (typeInput.size() != 0)
+        }
+        if (typeInput.size() != 0) {
             searchByType(typeInput);
-
-        if (!input.equals(""))
+        }
+        if (!"".equals(input)) {
             searchByName(input);
+        }
 
         // Add pokemon by name to the model list
         for (int f = NAME; f < pokedex.size(); f = f + OBJECT_LENGTH) {
             tempString = pokedex.get(f);
 
-            if (tempString.equals("name")) {
+            if ("name".equals(tempString)) {
                 tempPSP = new PokemonObject();
                 tempPSP.processInfo(pokedex, f + NAME);
                 listModel.addElement(tempPSP);
@@ -169,13 +187,14 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
     private void searchByRegion(ArrayList<String> regionInput) {
         pokedex = new ArrayList<String>();
 
-        for (String s : regionInput)
+        for (String s : regionInput) {
             try {
-                pssJsonReader.readJSON(s + ".json");
+                pssJsonReader.readJSON(DIR + s + ".json");
                 pokedex.addAll(pssJsonReader.get(s));
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
                 System.out.println("ERROR: FILE \"" + s + ".json\" WAS NOT FOUND OR IS EMPTY");
             }
+        }
     }
 
     /**
@@ -190,10 +209,13 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
         for (int g = EVOLUTION; g < tempPokedex.size(); g = g + OBJECT_LENGTH) {
             tempArray = tempPokedex.get(g + 1).split("-");
 
-            for (String s : evolutionInput)
-                if (s.equals(tempArray[1]))
-                    for (int h = 0; h < 8; h++)
+            for (String s : evolutionInput) {
+                if (s.equals(tempArray[1])) {
+                    for (int h = 0; h < OBJECT_LENGTH; h++) {
                         pokedex.add(tempPokedex.get(h + g - EVOLUTION));
+                    }
+                }
+            }
         }
     }
 
@@ -209,14 +231,16 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
         for (int g = TYPE; g < tempPokedex.size(); g = g + OBJECT_LENGTH) {
             tempArray = tempPokedex.get(g + 1).split("-");
 
-            for (int n = 0; n < tempArray.length; n++)
-                for (int d = 0; d < typeInput.size(); d++)
-                    if (tempArray[n].equalsIgnoreCase(typeInput.get(d)))
-                        for (int h = 0; h < 8; h++) {
+            breakpoint: for (int n = 0; n < tempArray.length; n++) {
+                for (int d = 0; d < typeInput.size(); d++) {
+                    if (tempArray[n].equalsIgnoreCase(typeInput.get(d))) {
+                        for (int h = 0; h < OBJECT_LENGTH; h++) {
                             pokedex.add(tempPokedex.get(g + h - TYPE));
-                            n = 3;
-                            d = typeInput.size();
                         }
+                        break breakpoint;
+                    }
+                }
+            }
         }
     }
 
@@ -232,13 +256,14 @@ public class PokemonSearch_Searcher implements ListSelectionListener {
         for (int g = NAME; g < tempPokedex.size(); g = g + OBJECT_LENGTH) {
             tempString = tempPokedex.get(g + 1);
 
-            for (int n = 0; n + input.length() <= tempString.length(); n++)
+            for (int n = 0; n + input.length() <= tempString.length(); n++) {
                 if (tempString.substring(n, n + input.length()).equalsIgnoreCase(input)) {
-                    n = tempString.length();
-
-                    for (int h = 0; h < 8; h++)
+                    for (int h = 0; h < OBJECT_LENGTH; h++) {
                         pokedex.add(tempPokedex.get(g + h - NAME));
+                    }
+                    break;
                 }
+            }
         }
     }
 

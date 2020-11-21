@@ -5,19 +5,22 @@
  * This file is under the MIT License.
  */
 
+package source;
+
+//TODO: Optimize nested loops
+
 /**
  * <p>
  * <b>[!] Known Issues:</b>
  * <p>
- * The list does not update at start up
+ * The list does not update at start up.
  * 
  * @author Nathin Wascher
- * @version v2.0.6 - November 10, 2020
+ * @version v2.1 - November 20, 2020
  */
+public final class PokemonSearch {
 
-public class PokemonSearch {
-    public PokemonSearch() {
-        main(null);
+    private PokemonSearch() {
     }
 
     public static void main(String[] args) {

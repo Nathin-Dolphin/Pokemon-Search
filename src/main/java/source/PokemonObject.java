@@ -5,20 +5,49 @@
  * This file is under the MIT License.
  */
 
-import utility.Misc;
-import utility.PopUpBox;
+package source;
 
 import java.util.ArrayList;
 
+import source.utility.Misc;
+import source.utility.PopUpBox;
+
 /**
  * @author Nathin Wascher
- * @version v1.1 - November 19, 2020
+ * @version v1.1.1 - November 20, 2020
  */
 public class PokemonObject {
+    // TODO: Have OBJECT_LENGTH get calculated from 'format' in pokeInfo.json
+    private static final int OBJECT_LENGTH = 8;
+
+    private static ArrayList<String> regionNameList;
+    private static ArrayList<Integer> regionRangeList;
+
     private ArrayList<String> pokedexEntry;
     private String pokemon;
 
     public PokemonObject() {
+    }
+
+    /**
+     * 
+     * @param regionList
+     */
+    public static void setRegionList(ArrayList<String> regionList) {
+        regionNameList = new ArrayList<String>();
+        regionRangeList = new ArrayList<Integer>();
+        String tempString;
+
+        for (int d = 0; d < regionList.size(); d = d + 2) {
+            tempString = regionList.get(d);
+            if (tempString.length() == 5) {
+                tempString = tempString.concat(" ");
+            }
+            regionNameList.add(tempString);
+
+            tempString = regionList.get(d + 1).split("-")[0];
+            regionRangeList.add(Integer.parseInt(tempString));
+        }
     }
 
     /**
@@ -33,8 +62,9 @@ public class PokemonObject {
         int pokeNum;
 
         pokedexEntry = new ArrayList<String>();
-        for (int g = 0; g < 8; g++)
+        for (int g = 0; g < OBJECT_LENGTH; g++) {
             pokedexEntry.add(pokedex.get(pokedexPos + g));
+        }
 
         String region = foundInRegion(pokedexEntry.get(3));
 
@@ -43,32 +73,39 @@ public class PokemonObject {
 
         // Adds the pokemon number
         pokeNum = Integer.parseInt(pokedexEntry.get(3));
-        if (pokeNum >= 1000)
+        if (pokeNum >= 10 * 10 * 10) {
             pokemon = pokemon + "  #" + pokeNum;
-        else if (pokeNum >= 100)
+        } else if (pokeNum >= 10 * 10) {
             pokemon = pokemon + "  #0" + pokeNum;
-        else if (pokeNum >= 10)
+        } else if (pokeNum >= 10) {
             pokemon = pokemon + "  #00" + pokeNum;
-        else
+        } else {
             pokemon = pokemon + "  #000" + pokeNum;
+        }
 
         // Adds the pokemon's name
         pokemon = pokemon + "  " + pokedexEntry.get(1) + "  ";
-        for (int i = pokedexEntry.get(1).length(); i < 12; i++)
+        for (int i = pokedexEntry.get(1).length(); i < 4 * 3; i++) {
             pokemon = pokemon + " ";
+        }
 
         // Adds the types
         tempArray = pokedexEntry.get(5).split("-");
         pokemon = pokemon + tempArray[0];
-        if (tempArray.length == 2)
+        if (tempArray.length == 2) {
             pokemon = pokemon + ", " + tempArray[1];
+        }
     }
 
+    /**
+     * 
+     */
     public void showInfoBox() {
         ArrayList<String> parse = new ArrayList<>();
 
-        for (int i = 0; i < pokedexEntry.size(); i++)
-            parse.add(Misc.capitalize(pokedexEntry.get(i)) + " : " + pokedexEntry.get(++i));
+        for (int i = 0; i < pokedexEntry.size(); i++) {
+            parse.add(Misc.capitalize(pokedexEntry.get(i)) + " : " + pokedexEntry.get(i + 1));
+        }
 
         PopUpBox tempPUB = new PopUpBox(pokedexEntry.get(1), parse);
         tempPUB.createBox();
@@ -83,26 +120,12 @@ public class PokemonObject {
     private String foundInRegion(String pokeNumString) {
         int pokeNum = Integer.parseInt(pokeNumString);
 
-        // TODO: Have this part be automatically calculated--
-        // TODO: --using the contents of 'pokeInfo.json'
-        if (pokeNum <= 151)
-            return "Kanto ";
-        else if (pokeNum <= 251)
-            return "Johto ";
-        else if (pokeNum <= 386)
-            return "Hoenn ";
-        else if (pokeNum <= 493)
-            return "Sinnoh";
-        else if (pokeNum <= 649)
-            return "Unova ";
-        else if (pokeNum <= 721)
-            return "Kalos ";
-        else if (pokeNum <= 809)
-            return "Alola ";
-        else if (pokeNum <= 898)
-            return "Galar ";
-        else
-            return "NULL";
+        for (int v = 0; v < regionNameList.size(); v++) {
+            if (pokeNum <= regionRangeList.get(v)) {
+                return regionNameList.get(v);
+            }
+        }
+        return "NULL";
     }
 
     @Override

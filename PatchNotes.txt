@@ -1,40 +1,28 @@
-Pokemon Search v2.0.6
+Pokemon Search Patch Notes
+
+ v2.1
+ - Is now actually in its own repository now (PokedexWriter is stored in another repository now)
+ - Some general optimizations
+ - Is now a Maven project
+
+ v2.0.6
  - Some minor optimization tweaks
 
-Pokemon Search v2.0.5
+ v2.0.5
  - It automatically searches for pokemon instead of the user needing to press the 'enter' button
 
-Pokemon Search v2.0.4
+ v2.0.4
  - 'PokemonSearch_Pokemon.java' renamed to 'PokemonObject.java' as it is planned to be used in PokedexWriter
  - Finished replacing awt.list with swing.JList
 
-Pokemon Search v2.0.3
+ v2.0.3
  - JList and DefaultListModel now use 'pokemon' objects to print to the screen
 
-Pokemon Search v2.0.2
+ v2.0.2
  - The screen shows the pokemon much faster
 
-Pokemon Search v2.0.1
+ v2.0.1
  - Added message to pop-up box
 
-Pokemon Search v2.0
+ v2.0
  - Search for Pokémon by name, number, type, and evolution
-
-
-Pokedex Writer v2.2
- - Lists are changed to JLists
- - Added an image to the title bar
-
-Pokedex Writer v2.1
- - Created a screen that allows the user to input the necessary arguments instead of through the terminal
- - A pop up box appears with info about the program on program execution
-
-Pokedex Writer v2.0.1
- - The user also must push 'add pokemon' while the 'create json' is selected to create the file
- - The screen shows when the user can create the file
-
-Pokedex Writer v2.0
- - Creat JSONs that conatin info about Pokémon for Pokemon Search to use
- - '-WriteNewPokedex' - Create a new JSON and manually input each Pokémon
- - '-WriteNewPokedexAssisted' - Create a new JSON and input each Pokémon with assistance
- - '-ModifyPokedex' - Modify the Pokémon in a JSON

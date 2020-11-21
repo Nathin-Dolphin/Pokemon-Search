@@ -5,7 +5,7 @@
  * This file is part of the utility library and is under the MIT License.
  */
 
-package utility;
+package source.utility;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -14,18 +14,18 @@ import javax.swing.JOptionPane;
 
 /**
  * <p>
- * <b>No Known Issues</b>
+ * <b>No Known Issues.</b>
  * 
  * @author Nathin Wascher
- * @version v1.0 - November 19, 2020
+ * @version v1.0.1 - November 20, 2020
  */
-public class Misc {
+public final class Misc {
 
-    public Misc() {
+    private Misc() {
     }
 
     /**
-     * Capitalizes the inputted string
+     * Capitalizes the inputted string.
      * 
      * @param input The string to capitalize
      * @return The capitalized string
@@ -44,7 +44,7 @@ public class Misc {
     }
 
     /**
-     * Set the x and y position of the {@code GridBagConstraint}
+     * Set the x and y position of the {@code GridBagConstraint}.
      * 
      * @param gbc   {@code GridBagConstraint}
      * @param gridX {@code GridBagConstraint.gridx} value
@@ -63,7 +63,7 @@ public class Misc {
      * @param warningMessage
      */
     public static void warningBox(Component frame, String warningMessage) {
-        JOptionPane.showConfirmDialog(frame, "WARNING: " + warningMessage, "WARNING MESSAGE!", JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showConfirmDialog(frame, "WARNING: " + warningMessage, "WARNING MESSAGE!",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
     }
 }

@@ -8,12 +8,17 @@
 
 ## Execute Program
 
-	'version' is the current version number of PokemonSearch
+	Method #1
+		Double click the jar file
 
-	...> cd ...\Pokemon-Search
-	...\Pokemon-Search> java -jar PokemonSearch-'version'.jar
 
-		Ex. java -jar PokemonSearch-v2.1.1.jar
+	Method #2
+		'version' is the current version number of PokemonSearch
+
+		...> cd ...\Pokemon-Search
+		...\Pokemon-Search> java -jar PokemonSearch-'version'.jar
+
+			Ex. java -jar PokemonSearch-v2.1.1.jar
 
 ## PokemonSearch
   ## Version 1.0 Features:

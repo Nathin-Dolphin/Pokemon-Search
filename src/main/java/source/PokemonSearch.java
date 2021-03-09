@@ -7,8 +7,6 @@
 
 package source;
 
-//TODO: Optimize nested loops
-
 /**
  * <p>
  * <b>[!] Known Issues:</b>
@@ -16,7 +14,7 @@ package source;
  * The list does not update at start up.
  * 
  * @author Nathin Wascher
- * @version v2.1 - November 20, 2020
+ * @version v2.1.1 - November 20, 2020
  */
 public final class PokemonSearch {
 
@@ -25,6 +23,6 @@ public final class PokemonSearch {
 
     public static void main(String[] args) {
         System.out.println("Executing Program (PokemonSearch)...");
-        new PokemonSearch_Panel();
+        new PS_Panel();
     }
 }

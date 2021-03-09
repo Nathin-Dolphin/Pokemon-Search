@@ -1,5 +1,10 @@
 Pokemon Search Patch Notes
 
+ v2.1.1
+ - Renamed java files
+ - Relocated some methods to other classes
+ - Some more optimizations and increased readabilty
+
  v2.1
  - Is now actually in its own repository now (PokedexWriter is stored in another repository now)
  - Some general optimizations

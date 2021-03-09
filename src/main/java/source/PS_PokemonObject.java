@@ -14,9 +14,8 @@ import source.utility.PopUpBox;
 
 /**
  * @author Nathin Wascher
- * @version v1.1.1 - November 20, 2020
  */
-public class PokemonObject {
+public class PS_PokemonObject {
     // TODO: Have OBJECT_LENGTH get calculated from 'format' in pokeInfo.json
     private static final int OBJECT_LENGTH = 8;
 
@@ -26,7 +25,7 @@ public class PokemonObject {
     private ArrayList<String> pokedexEntry;
     private String pokemon;
 
-    public PokemonObject() {
+    public PS_PokemonObject() {
     }
 
     /**
@@ -103,7 +102,7 @@ public class PokemonObject {
     public void showInfoBox() {
         ArrayList<String> parse = new ArrayList<>();
 
-        for (int i = 0; i < pokedexEntry.size(); i++) {
+        for (int i = 0; i < pokedexEntry.size() - 1; i = i + 2) {
             parse.add(Misc.capitalize(pokedexEntry.get(i)) + " : " + pokedexEntry.get(i + 1));
         }
 
@@ -111,12 +110,8 @@ public class PokemonObject {
         tempPUB.createBox();
     }
 
-    /**
-     * 
-     * @param pokeNumString
-     * @return A {@code String} of the region with the appropriate spaces to keep
-     *         spacing in {@code outputList} consistent
-     */
+    // A {@code String} of the region with the appropriate spaces
+    // to keep spacing in {@code outputList} consistent
     private String foundInRegion(String pokeNumString) {
         int pokeNum = Integer.parseInt(pokeNumString);
 

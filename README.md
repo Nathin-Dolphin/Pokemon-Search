@@ -13,7 +13,7 @@
 	...> cd ...\Pokemon-Search
 	...\Pokemon-Search> java -jar PokemonSearch-'version'.jar
 
-		Ex. java -jar PokemonSearch-2.1.jar
+		Ex. java -jar PokemonSearch-v2.1.1.jar
 
 ## PokemonSearch
   ## Version 1.0 Features:

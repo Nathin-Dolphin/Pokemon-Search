@@ -14,7 +14,7 @@ package source;
  * The list does not update at start up.
  * 
  * @author Nathin Wascher
- * @version v2.1.1 - November 20, 2020
+ * @version v2.1.1 - March 9, 2021
  */
 public final class PokemonSearch {
 

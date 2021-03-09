@@ -1,24 +1,6 @@
-# Program Execution
-
-[!] IMPORTANT PLEASE READ [!]: 
-
-	'...' is the path from your storage device to the location of the repository.
-
-	[!] The method of compiling and running was done on a Windows computer, if you are using a MAC, the instructions may be confusing. If this is so, anything before the '>' is the Window PowerShell showing the current directory. After '>' is the actual command. [!]
-
 ## Execute Program
 
-	Method #1
 		Double click the jar file
-
-
-	Method #2
-		'version' is the current version number of PokemonSearch
-
-		...> cd ...\Pokemon-Search
-		...\Pokemon-Search> java -jar PokemonSearch-'version'.jar
-
-			Ex. java -jar PokemonSearch-v2.1.1.jar
 
 ## PokemonSearch
   ## Version 1.0 Features:

@@ -35,7 +35,6 @@ import java.util.Scanner;
  * 
  * @see JSONParser
  */
-
 public class JSONReader extends JSONParser {
     private Scanner fileScan;
     private ArrayList<String> jsonContents;

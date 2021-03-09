@@ -10,6 +10,9 @@ package source.utility;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -59,11 +62,38 @@ public final class Misc {
 
     /**
      * 
-     * @param frame
+     */
+    public static ImageIcon findImageIcon() {
+        java.net.URL imageURL = Misc.class.getResource("Pokeball.png");
+
+        if (imageURL != null) {
+            return new ImageIcon(imageURL, "Pokeball");
+        } else {
+            System.out.println("Couldn't find file: Pokeball.png");
+            return null;
+        }
+    }
+
+    /**
+     * 
+     * @param parentComponent
+     * @param contents
+     */
+    public static void showInfoBox(Component parentComponent, String title, ArrayList<String> contents) {
+        String message = "";
+        for (String s : contents) {
+            message = message + s;
+        }
+        JOptionPane.showMessageDialog(parentComponent, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * 
+     * @param parentComponent
      * @param warningMessage
      */
-    public static void warningBox(Component frame, String warningMessage) {
-        JOptionPane.showConfirmDialog(frame, "WARNING: " + warningMessage, "WARNING MESSAGE!",
+    public static void warningBox(Component parentComponent, String warningMessage) {
+        JOptionPane.showConfirmDialog(parentComponent, "WARNING: " + warningMessage, "WARNING MESSAGE!",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
     }
 }

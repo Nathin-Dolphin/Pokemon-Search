@@ -39,8 +39,10 @@ public class SimpleFrame extends JFrame {
     private static final int MAX_HEIGHT = 840;
 
     private ImageIcon titleImage;
+
     private String javaFileName;
     private String frameTitle;
+
     private boolean fullscreen;
     private boolean addWarningWindow;
 
@@ -86,10 +88,37 @@ public class SimpleFrame extends JFrame {
     /**
      * Overloaded Method
      * <p>
-     * Creates a {@code JFrame} with the specified title and dimensions in the
-     * center of the screen. It also gives the option to allow a {@code JOptionPane}
-     * that is created when clicking the {@code JFrame} exit. The
-     * {@code JOptionPane} is a warning message asking to exit the program
+     * Creates a {@code JFrame} with the specified title and the option to start out
+     * maxamized, otherwise the dimensions are automatically set to 720 x 500 and
+     * put in the center of the screen. When the {@code JFrame} is unmaxamized, it
+     * goes to the before mentioned size. It also gives the option to allow
+     * {@code JOptionPane} that is created when clicking the {@code JFrame} exit.
+     * The {@code JOptionPane} is a warning message asking to exit the program
+     * completely or to keep the window open.
+     * 
+     * @param javaFileName     The name of the main class file (without the
+     *                         '.java').
+     * @param frameTitle       The title at the top of the {@code JFrame}.
+     * @param addWarningWindow When a user attempts to exit the {@code JFrame}, if a
+     *                         {@code JOptionPane} should appear and ask to exit the
+     *                         window or keep the {@code JFrame} open.
+     * @see JFrame
+     * @see JOptionPane
+     * @see #SimpleFrame(String, String, int, int, boolean, boolean, ImageIcon)
+     */
+    public SimpleFrame(String javaFileName, String frameTitle, boolean addWarningWindow) {
+        this.javaFileName = javaFileName;
+        this.frameTitle = frameTitle;
+        this.addWarningWindow = addWarningWindow;
+        newFrame();
+    }
+
+    /**
+     * Creates a {@code JFrame} with the specified title and the option to start out
+     * maxamized. When the {@code JFrame} is unmaxamized, it goes to the specified
+     * dimensions tn the center of the screen. It also gives the option to allow a
+     * {@code JOptionPane} that is created when clicking the {@code JFrame} exit.
+     * The {@code JOptionPane} is a warning message asking to exit the program
      * completely or to keep the window open.
      * 
      * @param javaFileName     The name of the main class file (without the
@@ -113,167 +142,16 @@ public class SimpleFrame extends JFrame {
         newFrame(width, height);
     }
 
-    /**
-     * Overloaded Method
-     * <p>
-     * Creates a {@code JFrame} with the specified title and dimensions in the
-     * center of the screen. It also gives the option to allow a {@code JOptionPane}
-     * that is created when clicking the {@code JFrame} exit. The
-     * {@code JOptionPane} is a warning message asking to exit the program
-     * completely or to keep the window open.
-     * 
-     * @param javaFileName     The name of the main class file (without the
-     *                         '.java').
-     * @param frameTitle       The title at the top of the {@code JFrame}.
-     * @param width            The initial width of the {@code JFrame}. This value
-     *                         should be less than 1540.
-     * @param height           The initial height of the {@code JFrame}. This value
-     *                         should be less than 840.
-     * @param addWarningWindow When a user attempts to exit the {@code JFrame}, if a
-     *                         {@code JOptionPane} should appear and ask to exit the
-     *                         window or keep the {@code JFrame} open.
-     * @param titleImage       The image that displays in the titlebar
-     * @see JFrame
-     * @see JOptionPane
-     * @see #SimpleFrame(String, String, int, int, boolean, boolean, ImageIcon)
-     */
-    public SimpleFrame(String javaFileName, String frameTitle, int width, int height, boolean addWarningWindow,
-            ImageIcon titleImage) {
-        this.javaFileName = javaFileName;
-        this.frameTitle = frameTitle;
-        this.addWarningWindow = addWarningWindow;
+    public void setFullscreen(boolean fullscreen) {
+        this.fullscreen = fullscreen;
+    }
+
+    public void setTitleImage(ImageIcon titleImage) {
         this.titleImage = titleImage;
-        newFrame(width, height);
     }
 
-    /**
-     * Overloaded Method
-     * <p>
-     * Creates a {@code JFrame} with the specified title and the option to start out
-     * maxamized, otherwise the dimensions are automatically set to 720 x 500 and
-     * put in the center of the screen. When the {@code JFrame} is unmaxamized, it
-     * goes to the before mentioned size. It also gives the option to allow
-     * {@code JOptionPane} that is created when clicking the {@code JFrame} exit.
-     * The {@code JOptionPane} is a warning message asking to exit the program
-     * completely or to keep the window open.
-     * 
-     * @param javaFileName     The name of the main class file (without the
-     *                         '.java').
-     * @param frameTitle       The title at the top of the {@code JFrame}.
-     * @param fullscreen       If the {@code JFrame} should start maxamized.
-     * @param addWarningWindow When a user attempts to exit the {@code JFrame}, if a
-     *                         {@code JOptionPane} should appear and ask to exit the
-     *                         window or keep the {@code JFrame} open.
-     * @see JFrame
-     * @see JOptionPane
-     * @see #SimpleFrame(String, String, int, int, boolean, boolean, ImageIcon)
-     */
-    public SimpleFrame(String javaFileName, String frameTitle, boolean fullscreen, boolean addWarningWindow) {
-        this.javaFileName = javaFileName;
-        this.frameTitle = frameTitle;
-        this.fullscreen = fullscreen;
-        this.addWarningWindow = addWarningWindow;
-        newFrame();
-    }
-
-    /**
-     * Overloaded Method
-     * <p>
-     * Creates a {@code JFrame} with the specified title and the title image and the
-     * option to start out maxamized, otherwise the dimensions are automatically set
-     * to 720 x 500 and put in the center of the screen. When the {@code JFrame} is
-     * unmaxamized, it goes to the before mentioned size. It also gives the option
-     * to allow {@code JOptionPane} that is created when clicking the {@code JFrame}
-     * exit. The {@code JOptionPane} is a warning message asking to exit the program
-     * completely or to keep the window open.
-     * 
-     * @param javaFileName     The name of the main class file (without the
-     *                         '.java').
-     * @param frameTitle       The title at the top of the {@code JFrame}.
-     * @param fullscreen       If the {@code JFrame} should start maxamized.
-     * @param addWarningWindow When a user attempts to exit the {@code JFrame}, if a
-     *                         {@code JOptionPane} should appear and ask to exit the
-     *                         window or keep the {@code JFrame} open.
-     * @param titleImage       The image that displays in the titlebar
-     * @see JFrame
-     * @see JOptionPane
-     * @see #SimpleFrame(String, String, int, int, boolean, boolean, ImageIcon)
-     */
-    public SimpleFrame(String javaFileName, String frameTitle, boolean fullscreen, boolean addWarningWindow,
-            ImageIcon titleImage) {
-        this.javaFileName = javaFileName;
-        this.frameTitle = frameTitle;
-        this.fullscreen = fullscreen;
-        this.addWarningWindow = addWarningWindow;
-        this.titleImage = titleImage;
-        newFrame();
-    }
-
-    /**
-     * Overloaded Method
-     * <p>
-     * Creates a {@code JFrame} with the specified title and the option to start out
-     * maxamized. When the {@code JFrame} is unmaxamized, it goes to the specified
-     * dimensions tn the center of the screen. It also gives the option to allow a
-     * {@code JOptionPane} that is created when clicking the {@code JFrame} exit.
-     * The {@code JOptionPane} is a warning message asking to exit the program
-     * completely or to keep the window open.
-     * 
-     * @param javaFileName     The name of the main class file (without the
-     *                         '.java').
-     * @param frameTitle       The title at the top of the {@code JFrame}.
-     * @param width            The initial width of the {@code JFrame}. This value
-     *                         should be less than 1540.
-     * @param height           The initial height of the {@code JFrame}. This value
-     *                         should be less than 840.
-     * @param fullscreen       If the {@code JFrame} should start maxamized.
-     * @param addWarningWindow When a user attempts to exit the {@code JFrame}, if a
-     *                         {@code JOptionPane} should appear and ask to exit the
-     *                         window or keep the {@code JFrame} open.
-     * @see JFrame
-     * @see JOptionPane
-     * @see #SimpleFrame(String, String, int, int, boolean, boolean, ImageIcon)
-     */
-    public SimpleFrame(String javaFileName, String frameTitle, int width, int height, boolean fullscreen,
-            boolean addWarningWindow) {
-        this.javaFileName = javaFileName;
-        this.frameTitle = frameTitle;
-        this.fullscreen = fullscreen;
-        this.addWarningWindow = addWarningWindow;
-        newFrame(width, height);
-    }
-
-    /**
-     * Creates a {@code JFrame} with the specified title and the option to start out
-     * maxamized. When the {@code JFrame} is unmaxamized, it goes to the specified
-     * dimensions tn the center of the screen. It also gives the option to allow a
-     * {@code JOptionPane} that is created when clicking the {@code JFrame} exit.
-     * The {@code JOptionPane} is a warning message asking to exit the program
-     * completely or to keep the window open.
-     * 
-     * @param javaFileName     The name of the main class file (without the
-     *                         '.java').
-     * @param frameTitle       The title at the top of the {@code JFrame}.
-     * @param width            The initial width of the {@code JFrame}. This value
-     *                         should be less than 1540.
-     * @param height           The initial height of the {@code JFrame}. This value
-     *                         should be less than 840.
-     * @param fullscreen       If the {@code JFrame} should start maxamized.
-     * @param addWarningWindow When a user attempts to exit the {@code JFrame}, if a
-     *                         {@code JOptionPane} should appear and ask to exit the
-     *                         window or keep the {@code JFrame} open.
-     * @param titleImage       The image that displays in the titlebar
-     * @see JFrame
-     * @see JOptionPane
-     */
-    public SimpleFrame(String javaFileName, String frameTitle, int width, int height, boolean fullscreen,
-            boolean addWarningWindow, ImageIcon titleImage) {
-        this.javaFileName = javaFileName;
-        this.frameTitle = frameTitle;
-        this.fullscreen = fullscreen;
-        this.addWarningWindow = addWarningWindow;
-        this.titleImage = titleImage;
-        newFrame(width, height);
+    public ImageIcon getTitleImage() {
+        return titleImage;
     }
 
     // Overloaded method

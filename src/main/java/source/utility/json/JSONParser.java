@@ -34,7 +34,6 @@ import java.util.ArrayList;
  * @see JSONReader
  * @see URLReader
  */
-
 public class JSONParser extends Thread {
 
     /**
